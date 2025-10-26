@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Центр ИИ-инноваций</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ===== Обновлённый HEADER и модалка AUTH ===== -->
+
+<header class="header">
+  <nav class="navbar container">
+    <div class="brand">
+      <div class="brand-left">
+        <div class="brand-logo">
+          <img src="pic/logo-texel.png" alt="Texel logo" class="brand-logo-img" />
+        </div>
+        <div class="brand-text">
+          <div class="texel-word">TEXEL</div>
+          <div class="brand-subtitle">Центр ИИ-инноваций</div>
+        </div>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="index.html#home">Главная</a></li>
+      <li><a href="guides.html">Методички</a></li>
+      <li><a href="articles.html">Статьи</a></li>
+      <li><a href="chatbot.html">Чат Бот</a></li>
+    </ul>
+
+    <a class="profile-icon" href="#auth-modal">
+      <span class="profile-initial">👤</span>
+    </a>
+  </nav>
+</header>
+
+<!-- ===== МОДАЛКА АВТОРИЗАЦИИ / РЕГИСТРАЦИИ ===== -->
+
+<section id="auth-modal" class="auth-modal-wrapper">
+  <div class="auth-modal-overlay"></div>
+  <div class="auth-modal-card">
+    <a href="#close" class="auth-close-btn">✕</a>
+
+    <div class="auth-modal-inner">
+      <div class="auth-head">
+        <div class="auth-eyebrow">Доступ в платформу</div>
+        <h2 class="auth-title">Вход / Регистрация</h2>
+        <p class="auth-desc">
+          Создай профиль, чтобы сохранять методички, следить за прогрессом и получать ранний доступ к инструментам ИИ.
+        </p>
+      </div>
+
+      <div class="auth-forms">
+
+        <!-- ВХОД -->
+        <div class="auth-block">
+          <h3 class="auth-block-title">Вход</h3>
+
+          <label class="auth-field">
+            <span class="auth-label">Email</span>
+            <input type="email" class="auth-input" placeholder="you@example.com" disabled />
+          </label>
+
+          <label class="auth-field">
+            <span class="auth-label">Пароль</span>
+            <input type="password" class="auth-input" placeholder="••••••••" disabled />
+          </label>
+
+          <button class="auth-btn" disabled>Войти</button>
+        </div>
+
+        <!-- РЕГИСТРАЦИЯ -->
+        <div class="auth-block">
+          <h3 class="auth-block-title">Регистрация</h3>
+
+          <label class="auth-field">
+            <span class="auth-label">Email</span>
+            <input type="email" class="auth-input" placeholder="you@example.com" disabled />
+          </label>
+
+          <label class="auth-field">
+            <span class="auth-label">Пароль</span>
+            <input type="password" class="auth-input" placeholder="Придумайте пароль" disabled />
+          </label>
+
+          <button class="auth-btn" disabled>Создать аккаунт</button>
+        </div>
+
+      </div>
+
+      <div class="auth-hint">
+        Функция регистрации/входа скоро будет доступна 🔧
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="close"></section>
+
+
+  <main>
+
+    <!-- HERO + FEATURES (Главная) -->
+    <section id="home" class="hero">
+      <div class="hero-inner container">
+        <div class="hero-content">
+
+          <div class="hero-eyebrow">
+            Твоя платформа для ИИ-прорыва
+          </div>
+
+          <h1 class="hero-title">
+            Центр ИИ-инноваций:<br />
+            учись, создавай, внедряй
+          </h1>
+
+          <p class="hero-desc">
+            Мы даём практические методички, проводим обучение, помогаем запускать ИИ-проекты
+            и внедрять решения на базе современных моделей.
+          </p>
+
+          <a href="#guides" class="cta-btn">Узнать больше</a>
+
+          <div class="hero-tags">
+            <span class="hero-tag">GPT на практике</span>
+            <span class="hero-tag">Методички и гайды</span>
+            <span class="hero-tag">Комьюнити экспертов</span>
+            <span class="hero-tag">Внедрение в процессы</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Features Section -->
+      <section class="features">
+        <div class="container">
+          <h2 class="features-title">Что ты получаешь</h2>
+
+          <div class="features-grid">
+
+            <article class="feature-card">
+              <div class="feature-icon"><span>GPT</span></div>
+              <div class="feature-head">
+                <h3 class="feature-name">Практика с GPT</h3>
+                <span class="feature-badge">готово</span>
+              </div>
+              <p class="feature-text">
+                Не теория ради теории. Мы учим работать с моделями, промт-дизайном
+                и автоматизацией задач.
+              </p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon"><span>DOC</span></div>
+              <div class="feature-head">
+                <h3 class="feature-name">Методички и гайды</h3>
+                <span class="feature-badge">готово</span>
+              </div>
+              <p class="feature-text">
+                Готовые пошаговые инструкции по применению ИИ в обучении,
+                исследованиях и реальном бизнесе.
+              </p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon"><span>AI</span></div>
+              <div class="feature-head">
+                <h3 class="feature-name">Сообщество</h3>
+                <span class="feature-badge">готово</span>
+              </div>
+              <p class="feature-text">
+                Команда единомышленников, которая помогает довести твою идею
+                до результата.
+              </p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon"><span>FLOW</span></div>
+              <div class="feature-head">
+                <h3 class="feature-name">Внедрение</h3>
+                <span class="feature-badge">готово</span>
+              </div>
+              <p class="feature-text">
+                Помогаем превратить прототип в рабочий инструмент и внедрить
+                его в процессы.
+              </p>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+    </section>
+
+      <!-- Секция: Методички -->
+<section id="guides" class="guides-preview-section">
+  <div class="container">
+    <div class="guides-preview-inner">
+      <h2 class="guides-preview-title">Методички</h2>
+      <p class="guides-preview-desc">
+        Уже доступно первое пособие по базовым понятиям ИИ для стажёров. <br />
+        Подходит для начинающих специалистов, которые хотят уверенно стартовать в цифровой среде.
+      </p>
+      <a href="guides.html" class="cta-btn">📘 Перейти к разделу</a>
+    </div>
+  </div>
+</section>
+
+<!-- Секция: Статьи -->
+<section id="articles" class="articles-preview-section">
+  <div class="container">
+    <div class="articles-preview-inner">
+      <h2 class="articles-preview-title">Статьи</h2>
+      <p class="articles-preview-desc">
+        Обзоры, кейсы и исследования по современным направлениям искусственного интеллекта.<br />
+        Узнай, как ИИ применяется в образовании, бизнесе, креативе и технологиях будущего.
+      </p>
+      <a href="articles.html" class="cta-btn">🧠 Перейти к разделу</a>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Секция: Чат Бот -->
+<section id="chatbot" class="chatbot-preview-section">
+  <div class="container">
+    <div class="chatbot-preview-inner">
+      <h2 class="chatbot-preview-title">Чат Бот TEXEL</h2>
+      <p class="chatbot-preview-desc">
+        В разработке: персональный ИИ-ассистент, который поможет тебе разобраться в стажировке, методичках и промт-дизайне. <br />
+        Подходит для начинающих специалистов, которые хотят учиться через диалог.
+      </p>
+      <a href="chatbot.html" class="cta-btn">🤖 Перейти к разделу</a>
+    </div>
+  </div>
+</section>
+
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner container">
+      <div class="footer-left">
+        © 2025 Центр ИИ-инноваций
+      </div>
+      <div class="footer-right">
+        <a href="#home">Главная</a>
+        <span class="dot">·</span>
+        <a href="guides.html">Методички</a>
+        <span class="dot">·</span>
+        <a href="#articles">Статьи</a>
+        <span class="dot">·</span>
+        <a href="chatbot.html">Чат Бот</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

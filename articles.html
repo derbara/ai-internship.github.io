@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Статьи — Центр ИИ-инноваций TEXEL</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="articles.css" />
+</head>
+<body>
+
+ <!-- ===== Обновлённый HEADER и модалка AUTH ===== -->
+
+<header class="header">
+  <nav class="navbar container">
+    <div class="brand">
+      <div class="brand-left">
+        <div class="brand-logo">
+          <img src="pic/logo-texel.png" alt="Texel logo" class="brand-logo-img" />
+        </div>
+        <div class="brand-text">
+          <div class="texel-word">TEXEL</div>
+          <div class="brand-subtitle">Центр ИИ-инноваций</div>
+        </div>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="index.html#home">Главная</a></li>
+      <li><a href="guides.html">Методички</a></li>
+      <li><a href="articles.html">Статьи</a></li>
+      <li><a href="chatbot.html">Чат Бот</a></li>
+    </ul>
+
+    <a class="profile-icon" href="#auth-modal">
+      <span class="profile-initial">👤</span>
+    </a>
+  </nav>
+</header>
+
+<!-- ===== МОДАЛКА АВТОРИЗАЦИИ / РЕГИСТРАЦИИ ===== -->
+
+<section id="auth-modal" class="auth-modal-wrapper">
+  <div class="auth-modal-overlay"></div>
+  <div class="auth-modal-card">
+    <a href="#close" class="auth-close-btn">✕</a>
+
+    <div class="auth-modal-inner">
+      <div class="auth-head">
+        <div class="auth-eyebrow">Доступ в платформу</div>
+        <h2 class="auth-title">Вход / Регистрация</h2>
+        <p class="auth-desc">
+          Создай профиль, чтобы сохранять методички, следить за прогрессом и получать ранний доступ к инструментам ИИ.
+        </p>
+      </div>
+
+      <div class="auth-forms">
+
+        <!-- ВХОД -->
+        <div class="auth-block">
+          <h3 class="auth-block-title">Вход</h3>
+
+          <label class="auth-field">
+            <span class="auth-label">Email</span>
+            <input type="email" class="auth-input" placeholder="you@example.com" disabled />
+          </label>
+
+          <label class="auth-field">
+            <span class="auth-label">Пароль</span>
+            <input type="password" class="auth-input" placeholder="••••••••" disabled />
+          </label>
+
+          <button class="auth-btn" disabled>Войти</button>
+        </div>
+
+        <!-- РЕГИСТРАЦИЯ -->
+        <div class="auth-block">
+          <h3 class="auth-block-title">Регистрация</h3>
+
+          <label class="auth-field">
+            <span class="auth-label">Email</span>
+            <input type="email" class="auth-input" placeholder="you@example.com" disabled />
+          </label>
+
+          <label class="auth-field">
+            <span class="auth-label">Пароль</span>
+            <input type="password" class="auth-input" placeholder="Придумайте пароль" disabled />
+          </label>
+
+          <button class="auth-btn" disabled>Создать аккаунт</button>
+        </div>
+
+      </div>
+
+      <div class="auth-hint">
+        Функция регистрации/входа скоро будет доступна 🔧
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="close"></section>
+
+
+  <main>
+
+    <!-- HERO -->
+    <section class="articles-hero">
+      <div class="container">
+        <div class="articles-hero-inner">
+          <div class="articles-eyebrow">ИИ · практика · разборы</div>
+
+          <h1 class="articles-title">
+            Статьи и обзоры об искусственном интеллекте
+          </h1>
+
+          <p class="articles-desc">
+            Узнавай о трендах, инструментах и кейсах применения ИИ.
+            Пишем простым языком, без лишнего пафоса.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- СПИСОК СТАТЕЙ -->
+    <section class="articles-list-section">
+      <div class="container">
+        <div class="articles-grid">
+
+          <!-- Статья 1 -->
+          <article class="article-card">
+            <div class="article-top">
+              <div class="badge badge-edu">Образование</div>
+              <div class="article-badge-new">NEW</div>
+            </div>
+
+            <h2 class="article-headline">
+              Как GPT-модели меняют обучение
+            </h2>
+
+            <p class="article-text">
+              Ассистенты преподавателей, автогенерация заданий, индивидуальные
+              объяснения сложных тем и честная обратная связь для студента.
+              Почему ИИ уже стал частью учебного процесса.
+            </p>
+
+            <a class="article-btn" href="article-education.html">Читать →</a>
+          </article>
+
+          <!-- Статья 2 -->
+          <article class="article-card">
+            <div class="article-top">
+              <div class="badge badge-biz">Бизнес</div>
+            </div>
+
+            <h2 class="article-headline">
+              ИИ в маркетинге: от гипотезы до продаж
+            </h2>
+
+            <p class="article-text">
+              Контент под нужную аудиторию, анализ спроса и поведение клиента
+              в реальном времени. Как компании используют модели, чтобы делать
+              меньше руками и зарабатывать больше.
+            </p>
+
+            <a class="article-btn" href="article-marketing.html">Читать →</a>
+          </article>
+
+          <!-- Статья 3 -->
+          <article class="article-card">
+            <div class="article-top">
+              <div class="badge badge-dev">Разработка</div>
+            </div>
+
+            <h2 class="article-headline">
+              Prompt Engineering без магии
+            </h2>
+
+            <p class="article-text">
+              Промт — это интерфейс к модели. Как правильно формулировать задачу,
+              чтобы ИИ отвечал стабильно, а не случайно. И как это встроить
+              прямо в продукт.
+            </p>
+
+            <a class="article-btn" href="article-prompt.html">Читать →</a>
+          </article>
+
+          <!-- Статья 4 -->
+          <article class="article-card">
+            <div class="article-top">
+              <div class="badge badge-creative">Креатив</div>
+            </div>
+
+            <h2 class="article-headline">
+              Нейросети и творчество: кто тут автор?
+            </h2>
+
+            <p class="article-text">
+              Генеративная графика, музыка, синтез голоса и фирменный стиль.
+              Как ИИ помогает создавать быстрее, не убивая личный почерк автора.
+            </p>
+
+            <a class="article-btn" href="article-creative.html">Читать →</a>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ПОДПИСКА -->
+    <section class="subscribe-section">
+      <div class="container">
+        <div class="subscribe-card">
+          <div class="subscribe-inner">
+            <div class="subscribe-pretitle">Оставайся в потоке</div>
+            <h3 class="subscribe-title">
+              Скоро можно будет подписаться на апдейты по ИИ
+            </h3>
+            <p class="subscribe-desc">
+              Мы готовим практические гайды, разборы кейсов и понятные объяснения.
+              Оставите почту — и не будете выпадать из контекста.
+            </p>
+
+            <form class="subscribe-form">
+              <input
+                type="email"
+                class="subscribe-input"
+                placeholder="Ваш email"
+                disabled
+              />
+              <button class="subscribe-btn" disabled>
+                Подписаться
+              </button>
+            </form>
+
+            <div class="subscribe-hint">
+              Функция подписки скоро будет доступна 🔧
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner container">
+      <div class="footer-left">
+        © 2025 Центр ИИ-инноваций
+      </div>
+      <div class="footer-right">
+        <a href="index.html#home">Главная</a>
+        <span class="dot">·</span>
+        <a href="guides.html">Методички</a>
+        <span class="dot">·</span>
+        <a href="articles.html">Статьи</a>
+        <span class="dot">·</span>
+        <a href="chatbot.html">Чат Бот</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

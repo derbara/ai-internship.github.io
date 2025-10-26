@@ -1,0 +1,317 @@
+.chatbot-section {
+  position: relative;
+  background: var(--bg-page-gradient);
+  color: rgba(255,255,255,0.95);
+  min-height: 90vh;
+  padding-top: calc(var(--header-height) + 4rem);
+  padding-bottom: 4rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.chatbot-section::before,
+.chatbot-section::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.chatbot-section::before {
+  width: 400px;
+  height: 400px;
+  left: -100px;
+  top: -100px;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(28,151,253,0.8) 0%,
+    rgba(102,126,234,0) 70%
+  );
+}
+
+.chatbot-section::after {
+  width: 480px;
+  height: 480px;
+  right: -120px;
+  bottom: -120px;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(118,75,162,0.8) 0%,
+    rgba(0,0,0,0) 70%
+  );
+}
+
+.chatbot-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ====== Зона чата ====== */
+
+.chat-area {
+  background: #000;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(118,75,162,0.15) 0%, rgba(0,0,0,0) 70%),
+    radial-gradient(circle at 80% 30%, rgba(28,151,253,0.15) 0%, rgba(0,0,0,0) 70%);
+  padding: 3rem 0 5rem;
+  color: #fff;
+}
+
+.chat-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.chat-window {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: var(--radius-lg, 20px);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    0 40px 120px rgba(0,0,0,0.9),
+    0 0 60px rgba(28,151,253,0.25);
+
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  min-height: 380px;
+}
+
+/* список сообщений */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-bottom: 1rem;
+  max-height: 320px;
+}
+
+/* карточка сообщения */
+.msg {
+  max-width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  font-family: 'Roboto', system-ui, sans-serif;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.9);
+  text-shadow: 0 10px 24px rgba(0,0,0,0.7);
+}
+
+/* позиционирование юзера справа */
+.msg-user {
+  align-self: flex-end;
+  text-align: left;
+}
+.msg-bot {
+  align-self: flex-start;
+  text-align: left;
+}
+
+/* подпись над сообщением */
+.msg-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  font-size: .7rem;
+  line-height: 1.2;
+  font-family: 'Poppins', system-ui, sans-serif;
+  color: rgba(255,255,255,0.6);
+}
+.msg-role-bot {
+  color: var(--brand-blue, #1C97FD);
+  font-weight: 600;
+}
+.msg-role-user {
+  color: var(--accent-success, #00D4AA);
+  font-weight: 600;
+}
+.msg-time {
+  color: rgba(255,255,255,0.4);
+  font-weight: 400;
+}
+
+/* "пузырь" сообщения */
+.msg-bubble {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius-md, 16px);
+  padding: .9rem 1rem;
+  font-size: .9rem;
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.8),
+    0 0 30px rgba(102,126,234,0.3);
+  color: rgba(255,255,255,0.9);
+}
+
+/* у сообщений юзера можно сделать чуть другой акцент */
+.msg-user .msg-bubble {
+  border-image: linear-gradient(
+    to bottom right,
+    var(--brand-blue, #1C97FD),
+    var(--brand-purple-dark, #764BA2)
+  ) 1;
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.8),
+    0 0 30px rgba(28,151,253,0.4);
+}
+
+/* панель ввода */
+.chat-input-bar {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: .75rem;
+  align-items: center;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: var(--radius-md,16px);
+  padding: .75rem 1rem;
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.8),
+    0 0 30px rgba(28,151,253,0.3);
+  margin-top: 1rem;
+}
+
+/* поле ввода */
+.chat-input {
+  flex: 1;
+  background: rgba(0,0,0,0.4);
+  border-radius: var(--radius-md,16px);
+  border: 2px solid rgba(255,255,255,0.4);
+  padding: .8rem 1rem;
+  font-family: 'Roboto', system-ui, sans-serif;
+  font-size: .9rem;
+  color: rgba(255,255,255,0.9);
+  outline: none;
+  cursor: not-allowed;
+}
+.chat-input::placeholder {
+  color: rgba(255,255,255,0.5);
+}
+
+/* кнопка отправки */
+.chat-send-btn {
+  background: rgba(255,255,255,0.05);
+  border-radius: var(--radius-md,16px);
+  border: 2px solid rgba(255,255,255,0.6);
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: .9rem;
+  color: rgba(255,255,255,0.8);
+  padding: .8rem 1rem;
+  min-width: 110px;
+  box-shadow:
+    0 16px 32px rgba(0,0,0,0.6),
+    0 0 25px rgba(28,151,253,0.4);
+  cursor: not-allowed;
+  transition: all .25s ease;
+}
+.chat-send-btn:hover {
+  box-shadow:
+    0 0 25px rgba(28,151,253,0.6),
+    0 20px 40px rgba(0,0,0,0.7);
+  border-image: linear-gradient(
+    90deg,
+    var(--brand-blue, #1C97FD),
+    var(--brand-purple-dark, #764BA2)
+  ) 1;
+  color: var(--brand-blue, #1C97FD);
+}
+
+/* подпись под полем ввода */
+.chat-hint {
+  margin-top: .75rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .75rem;
+  line-height: 1.4;
+  color: rgba(0,212,170,0.8); /* акцент как у success */
+  text-align: center;
+}
+
+/* адаптив для мобильных */
+@media (max-width: 768px) {
+  .chat-window {
+    padding: 1rem;
+    min-height: 320px;
+  }
+
+  .chat-messages {
+    max-height: 260px;
+    gap: 1rem;
+  }
+
+  .msg {
+    max-width: 100%;
+  }
+
+  .chat-input-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .chat-send-btn {
+    width: 100%;
+    min-width: 0;
+    text-align: center;
+  }
+}
+
+/* ===== Исправление высоты чата и положения футера ===== */
+
+/* Родительский контейнер страницы: тянем контент на всю высоту окна */
+html, body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Основная часть сайта (чтобы футер прижимался вниз) */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Зона чата теперь занимает всё оставшееся пространство */
+.chat-area {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  padding-top: 3rem;
+  padding-bottom: 4rem;
+  min-height: 75vh; /* можно увеличить до 80-85vh при желании */
+}
+
+/* Внутреннее окно чата */
+.chat-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Окно сообщений растягивается на всю высоту */
+.chat-window {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 600px; /* ↑ больше места по умолчанию */
+}
+
+/* Футер всегда внизу */
+.footer {
+  margin-top: auto;
+}
