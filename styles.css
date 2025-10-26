@@ -658,3 +658,30 @@ body {
   line-height: 1.5;
   color: rgba(255,255,255,0.9);
 }
+
+.chatbot-preview-section {
+  padding: 6rem 0;
+  background: var(--bg-page-gradient);
+  color: rgba(255,255,255,0.95);
+}
+
+.chatbot-preview-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.chatbot-preview-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.chatbot-preview-desc {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.85);
+}
