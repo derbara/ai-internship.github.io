@@ -9,177 +9,146 @@
 </head>
 <body>
 
-
-  <!-- ===== Обновлённый HEADER и модалка AUTH ===== -->
-
-<header class="header">
-  <nav class="navbar container">
-    <div class="brand">
-      <div class="brand-left">
-        <div class="brand-logo">
-          <img src="pic/logo-texel.png" alt="Texel logo" class="brand-logo-img" />
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <nav class="navbar container">
+      <div class="brand">
+        <div class="brand-left">
+          <div class="brand-logo">
+            <img src="pic/logo-texel.png" alt="Texel logo" class="brand-logo-img" />
+          </div>
+          <div class="brand-text">
+            <div class="texel-word">TEXEL</div>
+            <div class="brand-subtitle">Центр ИИ-инноваций</div>
+          </div>
         </div>
-        <div class="brand-text">
-          <div class="texel-word">TEXEL</div>
-          <div class="brand-subtitle">Центр ИИ-инноваций</div>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="index.html#home">Главная</a></li>
+        <li><a href="guides.html">Методички</a></li>
+        <li><a href="articles.html">Статьи</a></li>
+        <li><a href="chatbot.html">Чат Бот</a></li>
+      </ul>
+
+      <a class="profile-icon" href="#auth-modal">
+        <span class="profile-initial">👤</span>
+      </a>
+    </nav>
+  </header>
+
+  <!-- ===== МОДАЛКА АВТОРИЗАЦИИ ===== -->
+  <section id="auth-modal" class="auth-modal-wrapper">
+    <div class="auth-modal-overlay"></div>
+    <div class="auth-modal-card">
+      <a href="#close" class="auth-close-btn">✕</a>
+
+      <div class="auth-modal-inner">
+        <div class="auth-head">
+          <div class="auth-eyebrow">Доступ в платформу</div>
+          <h2 class="auth-title">Вход / Регистрация</h2>
+          <p class="auth-desc">
+            Создай профиль, чтобы сохранять методички, следить за прогрессом и получать ранний доступ к инструментам ИИ.
+          </p>
+        </div>
+
+        <div class="auth-forms">
+          <!-- ВХОД -->
+          <div class="auth-block">
+            <h3 class="auth-block-title">Вход</h3>
+            <label class="auth-field">
+              <span class="auth-label">Email</span>
+              <input type="email" class="auth-input" placeholder="you@example.com" disabled />
+            </label>
+            <label class="auth-field">
+              <span class="auth-label">Пароль</span>
+              <input type="password" class="auth-input" placeholder="••••••••" disabled />
+            </label>
+            <button class="auth-btn" disabled>Войти</button>
+          </div>
+
+          <!-- РЕГИСТРАЦИЯ -->
+          <div class="auth-block">
+            <h3 class="auth-block-title">Регистрация</h3>
+            <label class="auth-field">
+              <span class="auth-label">Email</span>
+              <input type="email" class="auth-input" placeholder="you@example.com" disabled />
+            </label>
+            <label class="auth-field">
+              <span class="auth-label">Пароль</span>
+              <input type="password" class="auth-input" placeholder="Придумайте пароль" disabled />
+            </label>
+            <button class="auth-btn" disabled>Создать аккаунт</button>
+          </div>
+        </div>
+
+        <div class="auth-hint">
+          Функция регистрации/входа скоро будет доступна 🔧
         </div>
       </div>
     </div>
+  </section>
 
-    <ul class="nav-links">
-      <li><a href="index.html#home">Главная</a></li>
-      <li><a href="guides.html">Методички</a></li>
-      <li><a href="articles.html">Статьи</a></li>
-      <li><a href="chatbot.html">Чат Бот</a></li>
-    </ul>
+  <section id="close"></section>
 
-    <a class="profile-icon" href="#auth-modal">
-      <span class="profile-initial">👤</span>
-    </a>
-  </nav>
-</header>
-
-<!-- ===== МОДАЛКА АВТОРИЗАЦИИ / РЕГИСТРАЦИИ ===== -->
-
-<section id="auth-modal" class="auth-modal-wrapper">
-  <div class="auth-modal-overlay"></div>
-  <div class="auth-modal-card">
-    <a href="#close" class="auth-close-btn">✕</a>
-
-    <div class="auth-modal-inner">
-      <div class="auth-head">
-        <div class="auth-eyebrow">Доступ в платформу</div>
-        <h2 class="auth-title">Вход / Регистрация</h2>
-        <p class="auth-desc">
-          Создай профиль, чтобы сохранять методички, следить за прогрессом и получать ранний доступ к инструментам ИИ.
-        </p>
-      </div>
-
-      <div class="auth-forms">
-
-        <!-- ВХОД -->
-        <div class="auth-block">
-          <h3 class="auth-block-title">Вход</h3>
-
-          <label class="auth-field">
-            <span class="auth-label">Email</span>
-            <input type="email" class="auth-input" placeholder="you@example.com" disabled />
-          </label>
-
-          <label class="auth-field">
-            <span class="auth-label">Пароль</span>
-            <input type="password" class="auth-input" placeholder="••••••••" disabled />
-          </label>
-
-          <button class="auth-btn" disabled>Войти</button>
-        </div>
-
-        <!-- РЕГИСТРАЦИЯ -->
-        <div class="auth-block">
-          <h3 class="auth-block-title">Регистрация</h3>
-
-          <label class="auth-field">
-            <span class="auth-label">Email</span>
-            <input type="email" class="auth-input" placeholder="you@example.com" disabled />
-          </label>
-
-          <label class="auth-field">
-            <span class="auth-label">Пароль</span>
-            <input type="password" class="auth-input" placeholder="Придумайте пароль" disabled />
-          </label>
-
-          <button class="auth-btn" disabled>Создать аккаунт</button>
-        </div>
-
-      </div>
-
-      <div class="auth-hint">
-        Функция регистрации/входа скоро будет доступна 🔧
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="close"></section>
-
-
-  <!-- Main -->
+  <!-- ===== MAIN ===== -->
   <main>
     <section class="chat-area">
-  <div class="chat-wrapper container">
+      <div class="chat-container container">
+        
+        <!-- Боковая панель с историей чатов -->
+        <aside class="chat-sidebar">
+          <div class="sidebar-header">
+            <h3 class="sidebar-title">История чатов</h3>
+            <button class="new-chat-btn" id="newChatBtn" title="Новый чат">
+              <span class="new-chat-icon">+</span>
+            </button>
+          </div>
+          
+          <div class="chat-list" id="chatList">
+            <!-- Чаты будут добавляться сюда динамически -->
+          </div>
+          
+          <div class="sidebar-footer">
+            <button class="clear-history-btn" id="clearHistoryBtn">
+              🗑️ Очистить историю
+            </button>
+          </div>
+        </aside>
 
-    <div class="chat-window">
-      <!-- Сообщения -->
-      <div class="chat-messages">
+        <!-- Основное окно чата -->
+        <div class="chat-wrapper">
+          <div class="chat-window">
+            <!-- Сообщения -->
+            <div class="chat-messages">
+              <!-- Сообщения добавляются динамически -->
+            </div>
 
-        <!-- Сообщение бота -->
-        <div class="msg msg-bot">
-          <div class="msg-meta">
-            <span class="msg-role-bot">TEXEL · ИИ-ассистент</span>
-            <span class="msg-time">сейчас</span>
-          </div>
-          <div class="msg-bubble">
-            Привет 👋 Я помогу тебе: найти подходящую методичку, разобрать термин из ИИ простыми словами
-            или подсказать, как сформулировать промт.  
-            <br /><br />
-            Вопросы можешь писать ниже. Живой ИИ-режим скоро будет включён 🔧
-          </div>
-        </div>
+            <!-- Поле ввода -->
+            <div class="chat-input-bar">
+              <input
+                class="chat-input"
+                type="text"
+                placeholder="Спроси про ИИ, методички или промт-дизайн…"
+                disabled
+              />
+              <button class="chat-stop-btn" id="stopBtn" style="display: none;">
+                ⏸️ Остановить
+              </button>
+              <button class="chat-send-btn" disabled>Отправить</button>
+            </div>
 
-        <!-- Сообщение пользователя (пример) -->
-        <div class="msg msg-user">
-          <div class="msg-meta">
-            <span class="msg-role-user">Ты</span>
-            <span class="msg-time">сейчас</span>
-          </div>
-          <div class="msg-bubble">
-            Объясни простыми словами, что такое нейросеть?
-          </div>
-        </div>
-
-        <!-- Ответ бота (пример объяснения) -->
-        <div class="msg msg-bot">
-          <div class="msg-meta">
-            <span class="msg-role-bot">TEXEL · ИИ-ассистент</span>
-            <span class="msg-time">сейчас</span>
-          </div>
-          <div class="msg-bubble">
-            Представь, что нейросеть — это как человек, который посмотрел миллион примеров
-            и научился угадывать, что правильно.  
-            <br /><br />
-            Она не «знает мир», она просто очень хорошо замечает закономерности:
-            какие слова идут после каких слов, как обычно выглядит кот на фото,
-            как люди формулируют ответы.  
-            <br /><br />
-            То есть это не магия, это математика, которая подбирает самый вероятный
-            следующий кусочек ответа.
+            <div class="chat-hint">
+              ✨ Чат работает! Задавай вопросы
+            </div>
           </div>
         </div>
 
       </div>
-
-      <!-- Поле ввода -->
-      <div class="chat-input-bar">
-        <input
-          class="chat-input"
-          type="text"
-          placeholder="Спроси про ИИ, методички или промт-дизайн…"
-          disabled
-        />
-        <button class="chat-send-btn" disabled>Отправить</button>
-      </div>
-
-      <div class="chat-hint">
-        Живой чат с моделью в разработке 🔧
-      </div>
-    </div>
-
-  </div>
-</section>
-
+    </section>
   </main>
 
-  <!-- Footer -->
+  <!-- ===== FOOTER ===== -->
   <footer class="footer">
     <div class="footer-inner container">
       <div class="footer-left">
@@ -197,6 +166,6 @@
     </div>
   </footer>
 
+  <script src="chatbot.js"></script>
 </body>
 </html>
-
