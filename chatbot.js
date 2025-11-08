@@ -3,17 +3,15 @@
 // Безопасная версия с загрузкой конфига
 // ==========================================
 
-// API ключ будет загружен из config.js
-let OPENROUTER_API_KEY = '';
-
-// Загружаем конфиг
-async function loadConfig() {
-  try {
-    const config = await import('./config.js');
-    OPENROUTER_API_KEY = config.OPENROUTER_API_KEY;
-    console.log('✅ API ключ загружен из config.js');
-  } catch (error) {
-    console.error('❌ Не удалось загрузить config.js. Создай файл config.js с API ключом!');
+if (!OPENROUTER_API_KEY) {
+  OPENROUTER_API_KEY = prompt(
+    "Вставь сюда API ключ [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]"
+  );
+  if (OPENROUTER_API_KEY) {
+    localStorage.setItem("OPENROUTER_API_KEY", OPENROUTER_API_KEY);
+    alert("✅ Ключ сохранён! Теперь чат готов к работе.");
+  } else {
+    alert("❌ Ключ не введён — чат не сможет работать.");
   }
 }
 
