@@ -1,12 +1,21 @@
-// TEXEL with OpenRouter (бесплатные модели)
-const OPENROUTER_API_KEY = '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'; // Ваш OpenRouter ключ
-
-
 // ==========================================
 // TEXEL AI Chat Bot with DeepSeek R1
-// Полная версия с историей чатов и кнопкой остановки
+// Безопасная версия с загрузкой конфига
 // ==========================================
 
+// API ключ будет загружен из config.js
+let OPENROUTER_API_KEY = '';
+
+// Загружаем конфиг
+async function loadConfig() {
+  try {
+    const config = await import('./config.js');
+    OPENROUTER_API_KEY = config.OPENROUTER_API_KEY;
+    console.log('✅ API ключ загружен из config.js');
+  } catch (error) {
+    console.error('❌ Не удалось загрузить config.js. Создай файл config.js с API ключом!');
+  }
+}
 
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 const MODEL = 'deepseek/deepseek-r1'; // DeepSeek R1
@@ -241,7 +250,10 @@ function clearAllHistory() {
 // ИНИЦИАЛИЗАЦИЯ
 // ==========================================
 
-function initChat() {
+async function initChat() {
+  // ВАЖНО: Загружаем конфиг ПЕРВЫМ ДЕЛОМ
+  await loadConfig();
+  
   chatMessages = document.querySelector('.chat-messages');
   chatInput = document.querySelector('.chat-input');
   sendButton = document.querySelector('.chat-send-btn');
@@ -333,8 +345,8 @@ async function sendMessage() {
   if (!userMessage) return;
   
   // Проверка API ключа
-  if (OPENROUTER_API_KEY === 'sk-or-v1-ваш_ключ_сюда') {
-    addBotMessage('⚠️ Ошибка: OpenRouter API ключ не установлен.\n\n1. Получи ключ на openrouter.ai/settings/keys\n2. Вставь его в chatbot.js (строка 6)');
+  if (!OPENROUTER_API_KEY || OPENROUTER_API_KEY === '') {
+    addBotMessage('⚠️ Ошибка: OpenRouter API ключ не загружен.\n\n1. Создай файл config.js\n2. Добавь туда: export const OPENROUTER_API_KEY = "твой-ключ";\n3. Получи ключ на openrouter.ai/settings/keys\n4. Добавь config.js в .gitignore');
     return;
   }
   
