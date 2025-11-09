@@ -58,11 +58,15 @@ function createNewChat() {
 
   chats.unshift(newChat);
   currentChatId = newChat.id;
-  chatMessages.innerHTML = "";
+  
+  if (chatMessages) {
+    chatMessages.innerHTML = "";
+  }
+  
   conversationHistory = [];
 
   addBotMessage(
-    `Привет! 👋 Я TEXEL ИИ-ассистент на базе DeepSeek R1.
+    `Привет! 👋 Я TEXEL — ИИ-ассистент на базе DeepSeek R1.
 
 Я могу помочь тебе:
 • Объяснить термины из ИИ простыми словами  
@@ -83,7 +87,11 @@ function loadChat(chatId) {
   if (!chat) return;
 
   currentChatId = chatId;
-  chatMessages.innerHTML = "";
+  
+  if (chatMessages) {
+    chatMessages.innerHTML = "";
+  }
+  
   conversationHistory = [];
 
   chat.messages.forEach((msg, index) => {
@@ -139,7 +147,10 @@ function saveMessageToChat(role, content) {
   });
   chat.updatedAt = new Date().toISOString();
 
-  if (role === "user" && chat.messages.filter((m) => m.role === "user").length === 1)
+  if (
+    role === "user" &&
+    chat.messages.filter((m) => m.role === "user").length === 1
+  )
     updateChatTitle(currentChatId, content);
 
   saveChatsToStorage();
@@ -168,8 +179,9 @@ function renderChatList() {
       const dateStr = formatChatDate(new Date(chat.updatedAt));
 
       return `
-        <div class="chat-item ${chat.id === currentChatId ? "active" : ""}" 
-             onclick="loadChat('${chat.id}')">
+        <div class="chat-item ${
+          chat.id === currentChatId ? "active" : ""
+        }" onclick="loadChat('${chat.id}')">
           <h4 class="chat-item-title">${escapeHtml(chat.title)}</h4>
           <p class="chat-item-preview">${escapeHtml(preview)}</p>
           <p class="chat-item-date">${dateStr}</p>
@@ -182,7 +194,8 @@ function renderChatList() {
 function formatChatDate(date) {
   const diff = Date.now() - date;
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  if (days > 7) return date.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+  if (days > 7)
+    return date.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
   if (days > 0) return days === 1 ? "Вчера" : `${days} дн. назад`;
   const hours = Math.floor(diff / (1000 * 60 * 60));
   if (hours > 0) return `${hours} ч. назад`;
@@ -197,6 +210,20 @@ function clearAllHistory() {
   createNewChat();
 }
 
+function stopGeneration() {
+  if (currentAbortController) {
+    console.log('🛑 Остановка генерации...');
+    currentAbortController.abort();
+    currentAbortController = null;
+    
+    const typingIndicators = document.querySelectorAll('.typing-indicator');
+    typingIndicators.forEach(indicator => indicator.remove());
+    
+    setLoading(false);
+    addBotMessage('⏸️ Генерация остановлена.');
+  }
+}
+
 // ==========================================
 // ИНИЦИАЛИЗАЦИЯ
 // ==========================================
@@ -207,8 +234,14 @@ async function initChat() {
   chatHint = document.querySelector(".chat-hint");
   stopButton = document.getElementById("stopBtn");
 
-  const newChatBtn = document.getElementById("newChatBtn");
-  const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+  // 🔹 ИСПРАВЛЕНО: Ищем кнопки по всем возможным вариантам
+  const newChatBtn = document.getElementById("newChatBtn") || 
+                     document.querySelector(".chat-add-btn") ||
+                     document.querySelector('[onclick*="createNewChat"]');
+                     
+  const clearHistoryBtn = document.getElementById("clearHistoryBtn") || 
+                          document.querySelector(".chat-clear-btn") ||
+                          document.querySelector('[onclick*="clearAllHistory"]');
 
   if (!chatMessages || !chatInput || !sendButton) {
     console.error("Элементы чата не найдены");
@@ -232,13 +265,41 @@ async function initChat() {
       sendMessage();
     }
   });
-  if (stopButton) stopButton.addEventListener("click", stopGeneration);
-  if (newChatBtn) newChatBtn.addEventListener("click", createNewChat);
-  if (clearHistoryBtn) clearHistoryBtn.addEventListener("click", clearAllHistory);
+  
+  if (stopButton) {
+    stopButton.addEventListener("click", stopGeneration);
+  }
+  
+  // 🔹 ИСПРАВЛЕНО: Проверяем существование кнопок перед добавлением listeners
+  if (newChatBtn) {
+    console.log('✅ Кнопка "Новый чат" найдена');
+    newChatBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('🆕 Создаём новый чат...');
+      createNewChat();
+    });
+  } else {
+    console.warn('⚠️ Кнопка "Новый чат" не найдена');
+  }
+  
+  if (clearHistoryBtn) {
+    console.log('✅ Кнопка "Очистить историю" найдена');
+    clearHistoryBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('🗑️ Очищаем историю...');
+      clearAllHistory();
+    });
+  } else {
+    console.warn('⚠️ Кнопка "Очистить историю" не найдена');
+  }
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && currentAbortController) stopGeneration();
   });
+  
+  console.log('✅ Инициализация завершена');
 }
 
 // ==========================================
@@ -311,7 +372,8 @@ async function sendMessage() {
     if (botReply) {
       addBotMessage(botReply);
       conversationHistory.push({ user: userMessage, bot: botReply });
-      if (conversationHistory.length > 10) conversationHistory = conversationHistory.slice(-10);
+      if (conversationHistory.length > 10)
+        conversationHistory = conversationHistory.slice(-10);
     } else {
       addBotMessage("Извини, не смог сформулировать ответ. Попробуй иначе.");
     }
@@ -319,6 +381,7 @@ async function sendMessage() {
     if (error.name !== "AbortError") {
       removeTypingIndicator(typingId);
       setLoading(false);
+      currentAbortController = null;
       addBotMessage("⚠️ Ошибка соединения. Проверь ключ и интернет.");
     }
   }
@@ -328,6 +391,8 @@ async function sendMessage() {
 // UI ФУНКЦИИ
 // ==========================================
 function addUserMessage(text, shouldSave = true) {
+  if (!chatMessages) return;
+  
   const msgDiv = document.createElement("div");
   msgDiv.className = "msg msg-user";
   msgDiv.innerHTML = `
@@ -342,6 +407,8 @@ function addUserMessage(text, shouldSave = true) {
 }
 
 function addBotMessage(text, shouldSave = true) {
+  if (!chatMessages) return;
+  
   const msgDiv = document.createElement("div");
   msgDiv.className = "msg msg-bot";
   msgDiv.innerHTML = `
@@ -356,6 +423,8 @@ function addBotMessage(text, shouldSave = true) {
 }
 
 function showTypingIndicator() {
+  if (!chatMessages) return null;
+  
   const id = "typing-" + Date.now();
   const typingDiv = document.createElement("div");
   typingDiv.id = id;
@@ -369,17 +438,26 @@ function showTypingIndicator() {
 }
 
 function removeTypingIndicator(id) {
+  if (!id) return;
   const indicator = document.getElementById(id);
   if (indicator) indicator.remove();
 }
 
 function setLoading(isLoading) {
-  sendButton.disabled = isLoading;
-  chatInput.disabled = isLoading;
-  sendButton.textContent = isLoading ? "⏳ Думаю..." : "Отправить";
-  if (stopButton) stopButton.style.display = isLoading ? "block" : "none";
-  sendButton.style.display = isLoading ? "none" : "block";
-  chatInput.style.opacity = isLoading ? "0.6" : "1";
+  if (sendButton) {
+    sendButton.disabled = isLoading;
+    sendButton.textContent = isLoading ? "⏳ Думаю..." : "Отправить";
+    sendButton.style.display = isLoading ? "none" : "block";
+  }
+  
+  if (chatInput) {
+    chatInput.disabled = isLoading;
+    chatInput.style.opacity = isLoading ? "0.6" : "1";
+  }
+  
+  if (stopButton) {
+    stopButton.style.display = isLoading ? "block" : "none";
+  }
 }
 
 function formatMessage(text) {
@@ -400,8 +478,19 @@ function getCurrentTime() {
 }
 
 function scrollToBottom() {
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+  if (chatMessages) {
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
 }
+
+// ==========================================
+// ЭКСПОРТ ФУНКЦИЙ ДЛЯ ГЛОБАЛЬНОГО ДОСТУПА
+// ==========================================
+window.createNewChat = createNewChat;
+window.clearAllHistory = clearAllHistory;
+window.loadChat = loadChat;
+window.deleteChat = deleteChat;
+window.stopGeneration = stopGeneration;
 
 // ==========================================
 // ЗАПУСК
