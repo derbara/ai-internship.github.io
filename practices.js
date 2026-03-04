@@ -524,17 +524,34 @@
     var isTaskPage = document.getElementById('taskCard');
 
     if (isTopicsPage) {
-      // Guard — сразу показываем lock screen для незалогиненных
-      if (window.TexelGuard) {
-        window.TexelGuard.guardPage('main', {
-          title: 'Требуется регистрация',
-          desc: 'Зарегистрируйтесь или войдите в аккаунт, чтобы получить доступ к практическим заданиям по программированию и 3D',
-          icon: '🔒'
+      var lockSection = document.getElementById('practicesLock');
+      var mainContent = document.getElementById('practicesMain');
+      var loginBtn = document.getElementById('practicesLoginBtn');
+
+      // Кнопка "Войти" открывает модалку
+      if (loginBtn) {
+        loginBtn.addEventListener('click', function () {
+          if (window.TexelAuth) window.TexelAuth.openModal();
         });
       }
+
       if (window.TexelAuth) {
-        window.TexelAuth.onReady(function () { initTopicsPage(); });
+        window.TexelAuth.onReady(function (user) {
+          if (user) {
+            // Залогинен — показать контент, скрыть lock
+            if (lockSection) lockSection.style.display = 'none';
+            if (mainContent) mainContent.style.display = '';
+            initTopicsPage();
+          } else {
+            // Не залогинен — показать lock, скрыть контент
+            if (lockSection) lockSection.style.display = '';
+            if (mainContent) mainContent.style.display = 'none';
+          }
+        });
       } else {
+        // Нет Firebase — показать контент без ограничений
+        if (lockSection) lockSection.style.display = 'none';
+        if (mainContent) mainContent.style.display = '';
         initTopicsPage();
       }
     }

@@ -44,26 +44,41 @@
 
   <main>
 
-    <section class="practices-hero">
-      <div class="container">
-        <div class="practices-hero-inner" data-reveal>
-          <div class="practices-eyebrow">Интерактивное обучение</div>
-          <h1 class="practices-title">Практики по программированию и 3D</h1>
-          <p class="practices-desc">
-            Выбери тему, проходи уровни и проверяй свои знания.
-            Если что-то непонятно — открой соседнюю вкладку «Чат Бот» и спроси!
-          </p>
-        </div>
+    <!-- Lock screen: видимый по умолчанию, скрывается при входе -->
+    <section class="practices-lock" id="practicesLock">
+      <div class="practices-lock-card">
+        <div class="practices-lock-icon">🔒</div>
+        <h2 class="practices-lock-title">Требуется регистрация</h2>
+        <p class="practices-lock-desc">
+          Зарегистрируйтесь или войдите в аккаунт, чтобы получить доступ к практическим заданиям по программированию и 3D
+        </p>
+        <button class="practices-lock-btn" id="practicesLoginBtn">Войти</button>
       </div>
     </section>
 
-    <section class="practices-section" id="practicesContent">
-      <div class="container">
-        <div class="practices-grid" id="topicsGrid">
-          <!-- Populated by practices.js -->
+    <!-- Контент: скрыт по умолчанию, показывается при входе -->
+    <div id="practicesMain" style="display:none;">
+      <section class="practices-hero">
+        <div class="container">
+          <div class="practices-hero-inner" data-reveal>
+            <div class="practices-eyebrow">Интерактивное обучение</div>
+            <h1 class="practices-title">Практики по программированию и 3D</h1>
+            <p class="practices-desc">
+              Выбери тему, проходи уровни и проверяй свои знания.
+              Если что-то непонятно — открой соседнюю вкладку «Чат Бот» и спроси!
+            </p>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <section class="practices-section" id="practicesContent">
+        <div class="container">
+          <div class="practices-grid" id="topicsGrid">
+            <!-- Populated by practices.js -->
+          </div>
+        </div>
+      </section>
+    </div>
 
   </main>
 
