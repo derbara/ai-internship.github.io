@@ -3,13 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Методички — Центр ИИ-инноваций</title>
+  <title>Практики — TEXEL</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="guides.css" />
+  <link rel="stylesheet" href="practices.css" />
 </head>
 <body>
-
-  <!-- ===== Обновлённый HEADER и модалка AUTH ===== -->
 
 <header class="header">
   <nav class="navbar container">
@@ -44,57 +42,42 @@
   </nav>
 </header>
 
-
   <main>
-    <section id="guides" class="guides-section">
+
+    <section class="practices-hero">
       <div class="container">
-        <h2 class="section-title" data-reveal>Методички и гайды</h2>
-        <p class="section-desc">
-          Пошаговые инструкции, чеклисты и практические материалы по внедрению ИИ в обучение, бизнес и исследования.
-        </p>
-
-        <div class="guides-grid">
-
-        <article class="guide-card" data-reveal>
-  <h3 class="guide-title">Базовые понятия ИИ для стажёров</h3>
-
-  <p class="guide-desc">
-    Методическое пособие от студентов Московского Политеха. Объясняет ключевые термины, типы ИИ, машинное обучение, нейросети и промт-взаимодействие. Подходит для стажёров, начинающих карьеру в цифровых компаниях.
-  </p>
-
-  <div class="guide-tags">
-    <span class="guide-tag">Образование</span>
-    <span class="guide-tag">ИИ</span>
-    <span class="guide-tag">Машинное обучение</span>
-  </div>
-
-  <p class="guide-desc" style="font-size: .8rem; color: rgba(255,255,255,0.6); margin-top: .5rem;">
-    Составители: студенты МПУ — Захаров А.С., Ким А.А., Угрюмова С.А., Винокуров А.Д. и др.
-  </p>
-
-  <a href="guides/guide2.pdf" class="download-btn" target="_blank" rel="noopener">📥 Скачать PDF</a>
-
-</article>
-
-
+        <div class="practices-hero-inner" data-reveal>
+          <div class="practices-eyebrow">Интерактивное обучение</div>
+          <h1 class="practices-title">Практики по программированию и 3D</h1>
+          <p class="practices-desc">
+            Выбери тему, проходи уровни и проверяй свои знания.
+            Если что-то непонятно — открой соседнюю вкладку «Чат Бот» и спроси!
+          </p>
         </div>
       </div>
     </section>
+
+    <section class="practices-section" id="practicesContent">
+      <div class="container">
+        <div class="practices-grid" id="topicsGrid">
+          <!-- Populated by practices.js -->
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <button class="scroll-top-btn" aria-label="Наверх">↑</button>
 
   <footer class="footer">
     <div class="footer-inner container">
-      <div class="footer-left">
-        © 2026 Центр ИИ-инноваций
-      </div>
+      <div class="footer-left">© 2026 Центр ИИ-инноваций</div>
       <div class="footer-right">
         <a href="index.html#home">Главная</a>
         <span class="dot">·</span>
         <a href="guides.html">Методички</a>
         <span class="dot">·</span>
-        <a href="index.html#articles">Статьи</a>
+        <a href="articles.html">Статьи</a>
         <span class="dot">·</span>
         <a href="practices.html">Практики</a>
         <span class="dot">·</span>
@@ -109,6 +92,7 @@
   <script src="firebase-config.js"></script>
   <script src="auth.js"></script>
   <script src="auth-guard.js"></script>
-  <script src="favorites.js"></script>
+  <script src="practices-data.js"></script>
+  <script src="practices.js"></script>
 </body>
 </html>

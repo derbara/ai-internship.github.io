@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Практика — TEXEL</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="practices.css" />
+</head>
+<body>
+
+<header class="header">
+  <nav class="navbar container">
+    <div class="brand">
+      <div class="brand-left">
+        <div class="brand-logo">
+          <img src="pic/logo-texel.png" alt="Texel logo" class="brand-logo-img" />
+        </div>
+        <div class="brand-text">
+          <div class="texel-word">TEXEL</div>
+          <div class="brand-subtitle">Центр ИИ-инноваций</div>
+        </div>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="index.html#home">Главная</a></li>
+      <li><a href="guides.html">Методички</a></li>
+      <li><a href="articles.html">Статьи</a></li>
+      <li><a href="practices.html">Практики</a></li>
+      <li><a href="chatbot.html">Чат Бот</a></li>
+      <li class="favorites-nav-item" style="display:none;"><a href="favorites.html">Избранное</a></li>
+    </ul>
+
+    <button class="burger-btn" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+
+    <button class="profile-icon" id="profileBtn">
+      <span class="profile-initial">👤</span>
+    </button>
+  </nav>
+</header>
+
+  <main>
+
+    <section class="practice-hero">
+      <div class="container">
+        <div class="practice-hero-inner" data-reveal>
+          <a href="practices.html" class="practice-back-btn">← Назад к темам</a>
+          <div class="practice-eyebrow" id="practiceEyebrow"></div>
+          <h1 class="practice-title" id="practiceTitle"></h1>
+          <div class="practice-progress-bar">
+            <div class="practice-progress-fill" id="progressFill" style="width:0%"></div>
+          </div>
+          <div class="practice-progress-text" id="progressText">Задание 1 из 4</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="practice-content" id="practiceContent">
+      <div class="container">
+        <div class="practice-task-card" id="taskCard">
+          <!-- Tasks rendered by practices.js -->
+        </div>
+
+        <div class="practice-nav">
+          <button class="practice-nav-btn" id="prevTask" disabled>← Назад</button>
+          <button class="practice-nav-btn practice-nav-next" id="nextTask">Далее →</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Level complete overlay -->
+  <div class="level-complete-overlay" id="levelComplete" style="display:none;">
+    <div class="level-complete-card">
+      <div class="level-complete-icon">🎉</div>
+      <h2>Уровень пройден!</h2>
+      <p id="levelScore">Правильных ответов: 0/0</p>
+      <div class="level-complete-actions">
+        <button class="cta-btn" id="nextLevelBtn">Следующий уровень →</button>
+        <a href="practices.html" class="practice-back-link">Вернуться к темам</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subscription lock overlay -->
+  <div class="subscription-lock-overlay" id="subscriptionLock" style="display:none;">
+    <div class="subscription-lock-card">
+      <div class="subscription-lock-icon">🔒</div>
+      <h2>Дальнейшие уровни по подписке</h2>
+      <p class="subscription-price">2 000 ₽/мес</p>
+      <p class="subscription-desc">Продолжайте обучение с расширенным набором задач и персональной поддержкой</p>
+      <button class="subscription-btn" disabled>Скоро будет доступно</button>
+      <a href="practices.html" class="practice-back-link">Вернуться к темам</a>
+    </div>
+  </div>
+
+  <button class="scroll-top-btn" aria-label="Наверх">↑</button>
+
+  <footer class="footer">
+    <div class="footer-inner container">
+      <div class="footer-left">© 2026 Центр ИИ-инноваций</div>
+      <div class="footer-right">
+        <a href="index.html#home">Главная</a>
+        <span class="dot">·</span>
+        <a href="guides.html">Методички</a>
+        <span class="dot">·</span>
+        <a href="articles.html">Статьи</a>
+        <span class="dot">·</span>
+        <a href="practices.html">Практики</a>
+        <span class="dot">·</span>
+        <a href="chatbot.html">Чат Бот</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="practices-data.js"></script>
+  <script src="practices.js"></script>
+</body>
+</html>

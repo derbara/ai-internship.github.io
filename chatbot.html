@@ -28,68 +28,20 @@
         <li><a href="index.html#home">Главная</a></li>
         <li><a href="guides.html">Методички</a></li>
         <li><a href="articles.html">Статьи</a></li>
+        <li><a href="practices.html">Практики</a></li>
         <li><a href="chatbot.html">Чат Бот</a></li>
+        <li class="favorites-nav-item" style="display:none;"><a href="favorites.html">Избранное</a></li>
       </ul>
 
-      <a class="profile-icon" href="#auth-modal">
+      <button class="burger-btn" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+
+      <button class="profile-icon" id="profileBtn">
         <span class="profile-initial">👤</span>
-      </a>
+      </button>
     </nav>
   </header>
-
-  <!-- ===== МОДАЛКА АВТОРИЗАЦИИ ===== -->
-  <section id="auth-modal" class="auth-modal-wrapper">
-    <div class="auth-modal-overlay"></div>
-    <div class="auth-modal-card">
-      <a href="#close" class="auth-close-btn">✕</a>
-
-      <div class="auth-modal-inner">
-        <div class="auth-head">
-          <div class="auth-eyebrow">Доступ в платформу</div>
-          <h2 class="auth-title">Вход / Регистрация</h2>
-          <p class="auth-desc">
-            Создай профиль, чтобы сохранять методички, следить за прогрессом и получать ранний доступ к инструментам ИИ.
-          </p>
-        </div>
-
-        <div class="auth-forms">
-          <!-- ВХОД -->
-          <div class="auth-block">
-            <h3 class="auth-block-title">Вход</h3>
-            <label class="auth-field">
-              <span class="auth-label">Email</span>
-              <input type="email" class="auth-input" placeholder="you@example.com" disabled />
-            </label>
-            <label class="auth-field">
-              <span class="auth-label">Пароль</span>
-              <input type="password" class="auth-input" placeholder="••••••••" disabled />
-            </label>
-            <button class="auth-btn" disabled>Войти</button>
-          </div>
-
-          <!-- РЕГИСТРАЦИЯ -->
-          <div class="auth-block">
-            <h3 class="auth-block-title">Регистрация</h3>
-            <label class="auth-field">
-              <span class="auth-label">Email</span>
-              <input type="email" class="auth-input" placeholder="you@example.com" disabled />
-            </label>
-            <label class="auth-field">
-              <span class="auth-label">Пароль</span>
-              <input type="password" class="auth-input" placeholder="Придумайте пароль" disabled />
-            </label>
-            <button class="auth-btn" disabled>Создать аккаунт</button>
-          </div>
-        </div>
-
-        <div class="auth-hint">
-          Функция регистрации/входа скоро будет доступна 🔧
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="close"></section>
 
   <!-- ===== MAIN ===== -->
   <main>
@@ -110,6 +62,9 @@
           </div>
           
           <div class="sidebar-footer">
+            <button class="change-key-btn" id="changeKeyBtn" onclick="changeApiKey()">
+              🔑 Сменить API-ключ
+            </button>
             <button class="clear-history-btn" id="clearHistoryBtn">
               🗑️ Очистить историю
             </button>
@@ -152,7 +107,7 @@
   <footer class="footer">
     <div class="footer-inner container">
       <div class="footer-left">
-        © 2025 Центр ИИ-инноваций
+        © 2026 Центр ИИ-инноваций
       </div>
       <div class="footer-right">
         <a href="index.html#home">Главная</a>
@@ -161,11 +116,19 @@
         <span class="dot">·</span>
         <a href="index.html#articles">Статьи</a>
         <span class="dot">·</span>
+        <a href="practices.html">Практики</a>
+        <span class="dot">·</span>
         <a href="chatbot.html">Чат Бот</a>
       </div>
     </div>
   </footer>
 
+  <script src="main.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
   <script src="chatbot.js"></script>
 </body>
 </html>

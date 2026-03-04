@@ -406,11 +406,7 @@
 
 /* у сообщений юзера другой акцент */
 .msg-user .msg-bubble {
-  border-image: linear-gradient(
-    to bottom right,
-    var(--brand-blue, #1C97FD),
-    var(--brand-purple-dark, #764BA2)
-  ) 1;
+  border-color: rgba(28,151,253,0.5);
   box-shadow:
     0 20px 40px rgba(0,0,0,0.8),
     0 0 30px rgba(28,151,253,0.4);
@@ -605,11 +601,7 @@
   box-shadow:
     0 0 25px rgba(28,151,253,0.6),
     0 20px 40px rgba(0,0,0,0.7);
-  border-image: linear-gradient(
-    90deg,
-    var(--brand-blue, #1C97FD),
-    var(--brand-purple-dark, #764BA2)
-  ) 1;
+  border-color: var(--brand-blue, #1C97FD);
   color: var(--brand-blue, #1C97FD);
   transform: translateY(-2px);
 }
@@ -752,4 +744,263 @@ main {
 
 .chat-stop-btn {
   animation: pulse-stop 2s infinite;
+}
+
+/* ====== КНОПКА СМЕНИТЬ КЛЮЧ ====== */
+
+.change-key-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(28, 151, 253, 0.08);
+  border: 1px solid rgba(28, 151, 253, 0.2);
+  color: var(--brand-blue, #1C97FD);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 8px;
+}
+.change-key-btn:hover {
+  background: rgba(28, 151, 253, 0.15);
+  border-color: rgba(28, 151, 253, 0.4);
+}
+
+/* ====== ЭКРАН ВВОДА API КЛЮЧА ====== */
+
+.apikey-screen {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 600px;
+}
+
+.apikey-card {
+  max-width: 520px;
+  width: 100%;
+  padding: 2.5rem;
+  background: rgba(10, 10, 18, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-lg, 20px);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    0 40px 120px rgba(0, 0, 0, 0.9),
+    0 0 60px rgba(28, 151, 253, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  text-align: center;
+}
+
+.apikey-icon {
+  font-size: 3rem;
+}
+
+.apikey-title {
+  font-family: 'Ubuntu', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #fff;
+  margin: 0;
+}
+
+.apikey-desc {
+  font-family: 'Roboto', system-ui, sans-serif;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Шаги инструкции */
+.apikey-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.apikey-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+}
+
+.apikey-step-num {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand-blue, #1C97FD), var(--brand-purple-dark, #764BA2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #fff;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.apikey-step-text {
+  font-family: 'Roboto', system-ui, sans-serif;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.45;
+}
+
+.apikey-step-text strong {
+  color: #fff;
+}
+
+.apikey-step-text a {
+  color: var(--brand-blue, #1C97FD);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.apikey-step-text a:hover {
+  text-decoration: underline;
+}
+
+.apikey-step-text code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  background: rgba(28, 151, 253, 0.1);
+  border: 1px solid rgba(28, 151, 253, 0.2);
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: var(--brand-blue, #1C97FD);
+}
+
+/* Поле ввода ключа */
+.apikey-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.apikey-input {
+  width: 100%;
+  padding: 0.85rem 3rem 0.85rem 1rem;
+  border-radius: var(--radius-md, 16px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.apikey-input:focus {
+  border-color: var(--brand-blue, #1C97FD);
+  box-shadow: 0 0 20px rgba(28, 151, 253, 0.15);
+}
+
+.apikey-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.apikey-toggle-vis {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 4px;
+  transition: color 0.2s;
+}
+.apikey-toggle-vis:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Ошибка */
+.apikey-error {
+  display: none;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.8rem;
+  color: #ef4444;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+/* Кнопки */
+.apikey-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.apikey-submit {
+  padding: 0.9rem 2rem;
+  border-radius: var(--radius-md, 16px);
+  background: linear-gradient(135deg, var(--brand-blue, #1C97FD), var(--brand-purple-dark, #764BA2));
+  border: none;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 24px rgba(28, 151, 253, 0.3);
+}
+.apikey-submit:hover {
+  box-shadow: 0 12px 32px rgba(28, 151, 253, 0.5);
+  transform: translateY(-2px);
+}
+
+.apikey-cancel {
+  padding: 0.75rem 2rem;
+  border-radius: var(--radius-md, 16px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.apikey-cancel:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
+}
+
+/* Подсказка внизу */
+.apikey-hint {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ====== АДАПТИВ КЛЮЧА ====== */
+@media (max-width: 768px) {
+  .apikey-card {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  .apikey-title {
+    font-size: 1.25rem;
+  }
+  .apikey-steps {
+    gap: 0.5rem;
+  }
+  .apikey-step {
+    padding: 0.6rem 0.75rem;
+  }
 }

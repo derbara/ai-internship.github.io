@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTML, CSS, JS: почему веб-разработка — это суперсила — TEXEL</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="articles.css" />
+</head>
+<body>
+
+<header class="header">
+  <nav class="navbar container">
+    <div class="brand">
+      <div class="brand-left">
+        <div class="brand-logo">
+          <img src="pic/logo-texel.png" alt="Texel logo" class="brand-logo-img" />
+        </div>
+        <div class="brand-text">
+          <div class="texel-word">TEXEL</div>
+          <div class="brand-subtitle">Центр ИИ-инноваций</div>
+        </div>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="index.html#home">Главная</a></li>
+      <li><a href="guides.html">Методички</a></li>
+      <li><a href="articles.html">Статьи</a></li>
+      <li><a href="practices.html">Практики</a></li>
+      <li><a href="chatbot.html">Чат Бот</a></li>
+      <li class="favorites-nav-item" style="display:none;"><a href="favorites.html">Избранное</a></li>
+    </ul>
+
+    <button class="burger-btn" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+
+    <button class="profile-icon" id="profileBtn">
+      <span class="profile-initial">👤</span>
+    </button>
+  </nav>
+</header>
+
+
+  <main>
+
+    <!-- HERO СТАТЬИ -->
+    <section class="article-page-hero">
+      <div class="article-page-hero-inner container">
+        <div class="article-page-eyebrow badge badge-biz">Веб</div>
+
+        <h1 class="article-page-title">
+          HTML, CSS, JS: почему веб-разработка — это суперсила
+        </h1>
+
+        <p class="article-page-lead">
+          Каждый сайт, каждое приложение, каждый интерфейс в браузере —
+          это HTML, CSS и JavaScript. Знание веб-технологий даёт возможность
+          создавать то, что видят миллионы людей. И начать проще, чем кажется.
+        </p>
+
+        <a href="articles.html" class="article-back-btn">← Назад к статьям</a>
+      </div>
+    </section>
+
+    <!-- ТЕЛО СТАТЬИ -->
+    <section class="article-body container">
+      <article class="article-content">
+
+        <h2>1. Веб — это основа всего цифрового</h2>
+        <p>
+          По данным W3Techs, более 97% всех сайтов в интернете используют HTML и CSS.
+          JavaScript работает на 98.8% сайтов на стороне клиента.
+          Это не просто популярные технологии — это фундамент интернета.
+        </p>
+
+        <p>
+          Когда ты открываешь любое приложение в браузере — интернет-банк,
+          соцсеть, почту, онлайн-магазин — ты видишь HTML-страницу,
+          оформленную с помощью CSS и оживлённую JavaScript.
+          Даже мобильные приложения часто используют веб-технологии внутри
+          (React Native, Ionic, Electron).
+        </p>
+
+        <h3>Почему это важно</h3>
+        <p>
+          Изучая веб-разработку, ты получаешь навык, который применим везде:
+          от личного блога до корпоративного портала.
+          Это самый универсальный вход в IT.
+        </p>
+
+        <h2>2. HTML: скелет страницы</h2>
+        <p>
+          HTML (HyperText Markup Language) — язык разметки. Он определяет
+          структуру: заголовки, абзацы, картинки, ссылки, формы.
+          Это не язык программирования в классическом смысле —
+          здесь нет переменных и циклов. Но это первый шаг,
+          без которого не бывает ни одного сайта.
+        </p>
+
+        <p>
+          Стандарт HTML5 принёс мультимедиа: встроенное видео и аудио,
+          элемент canvas для рисования, API для геолокации и хранения данных.
+          Современный HTML — это гораздо больше, чем просто теги.
+        </p>
+
+        <h2>3. CSS: стиль и дизайн</h2>
+        <p>
+          CSS (Cascading Style Sheets) превращает голый HTML в красивую
+          страницу. Цвета, шрифты, отступы, анимации, адаптивная вёрстка
+          под мобильные устройства — всё это CSS.
+        </p>
+
+        <p>
+          Современный CSS с Flexbox и Grid позволяет создавать сложные
+          макеты без единой строчки JavaScript. CSS-переменные,
+          кастомные свойства и анимации через @keyframes делают
+          стилизацию мощной и гибкой.
+        </p>
+
+        <h3>CSS Grid и Flexbox</h3>
+        <p>
+          До 2017 года вёрстка сложных макетов была болью: таблицы, float,
+          clearfix. Сейчас с Flexbox и Grid ты описываешь макет в нескольких
+          строках. Это революция, которая сделала CSS по-настоящему удобным.
+        </p>
+
+        <h2>4. JavaScript: оживляем страницу</h2>
+        <p>
+          JavaScript — единственный язык программирования, который работает
+          прямо в браузере. Он отвечает за интерактивность: клики,
+          формы, анимации, загрузку данных без перезагрузки страницы.
+        </p>
+
+        <p>
+          Но JS давно вышел за рамки браузера. Node.js позволяет
+          писать серверный код, Electron — десктопные приложения
+          (VS Code, Discord, Slack написаны на нём),
+          React Native — мобильные приложения.
+        </p>
+
+        <p>
+          По данным Stack Overflow Developer Survey 2024,
+          JavaScript — самый используемый язык программирования
+          в мире уже 12-й год подряд. Знание JS открывает путь
+          практически в любую область IT.
+        </p>
+
+        <h2>5. ИИ помогает учиться веб-разработке</h2>
+        <p>
+          Современные ИИ-ассистенты (ChatGPT, Claude, DeepSeek) отлично
+          понимают HTML, CSS и JavaScript. Ты можешь:
+        </p>
+
+        <p>
+          — Попросить объяснить, что делает конкретный фрагмент кода.<br />
+          — Дать ИИ макет и попросить написать CSS для него.<br />
+          — Описать поведение кнопки и получить рабочий JavaScript.<br />
+          — Спросить «почему мой макет съехал» и получить конкретный ответ.
+        </p>
+
+        <p>
+          Это не замена обучению — это ускоритель. ИИ объяснит ошибку
+          моментально, без необходимости час гуглить Stack Overflow.
+          На нашей платформе чат-бот TEXEL помогает разбираться
+          с заданиями из практик по HTML.
+        </p>
+
+        <h2>6. С чего начать</h2>
+        <p>
+          Путь в веб-разработку простой и понятный:
+        </p>
+
+        <p>
+          1. HTML — научись строить структуру страницы (1–2 дня).<br />
+          2. CSS — добавь стили, освой Flexbox (3–5 дней).<br />
+          3. JavaScript — изучи основы: переменные, функции, события (1–2 недели).<br />
+          4. Собери свой первый проект: личную страницу или лендинг.<br />
+          5. Практикуйся на нашей платформе — раздел практик по HTML с заданиями по уровням.
+        </p>
+
+        <p>
+          Главное правило: не читай — пиши код. Каждый день хотя бы 30 минут
+          практики дают больше, чем часы просмотра видеоуроков.
+        </p>
+
+        <h2>Итог</h2>
+        <p>
+          Веб-разработка — это самый доступный и востребованный навык в IT.
+          HTML, CSS и JavaScript — три кита, на которых стоит весь интернет.
+          Начать можно прямо сейчас, без установки сложных программ —
+          достаточно текстового редактора и браузера.
+        </p>
+
+        <div class="article-sources">
+          <h3>Источники</h3>
+          <ul>
+            <li>W3Techs — Usage Statistics of Markup Languages — <a href="https://w3techs.com/technologies/overview/markup_language" target="_blank" rel="noopener">w3techs.com</a></li>
+            <li>Stack Overflow Developer Survey 2024 — <a href="https://survey.stackoverflow.co/2024/" target="_blank" rel="noopener">survey.stackoverflow.co/2024</a></li>
+            <li>MDN Web Docs — HTML, CSS, JavaScript — <a href="https://developer.mozilla.org/ru/" target="_blank" rel="noopener">developer.mozilla.org</a></li>
+            <li>CSS-Tricks — A Complete Guide to Flexbox — <a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/" target="_blank" rel="noopener">css-tricks.com</a></li>
+            <li>Node.js — официальный сайт — <a href="https://nodejs.org/" target="_blank" rel="noopener">nodejs.org</a></li>
+          </ul>
+        </div>
+
+      </article>
+    </section>
+
+  </main>
+
+  <button class="scroll-top-btn" aria-label="Наверх">↑</button>
+
+  <footer class="footer">
+    <div class="footer-inner container">
+      <div class="footer-left">© 2026 Центр ИИ-инноваций</div>
+      <div class="footer-right">
+        <a href="index.html#home">Главная</a>
+        <span class="dot">·</span>
+        <a href="guides.html">Методички</a>
+        <span class="dot">·</span>
+        <a href="articles.html">Статьи</a>
+        <span class="dot">·</span>
+        <a href="practices.html">Практики</a>
+        <span class="dot">·</span>
+        <a href="chatbot.html">Чат Бот</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="favorites.js"></script>
+</body>
+</html>

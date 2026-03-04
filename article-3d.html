@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ИИ в 3D-моделировании: новая эра дизайна — TEXEL</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="articles.css" />
+</head>
+<body>
+
+<header class="header">
+  <nav class="navbar container">
+    <div class="brand">
+      <div class="brand-left">
+        <div class="brand-logo">
+          <img src="pic/logo-texel.png" alt="Texel logo" class="brand-logo-img" />
+        </div>
+        <div class="brand-text">
+          <div class="texel-word">TEXEL</div>
+          <div class="brand-subtitle">Центр ИИ-инноваций</div>
+        </div>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="index.html#home">Главная</a></li>
+      <li><a href="guides.html">Методички</a></li>
+      <li><a href="articles.html">Статьи</a></li>
+      <li><a href="practices.html">Практики</a></li>
+      <li><a href="chatbot.html">Чат Бот</a></li>
+      <li class="favorites-nav-item" style="display:none;"><a href="favorites.html">Избранное</a></li>
+    </ul>
+
+    <button class="burger-btn" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+
+    <button class="profile-icon" id="profileBtn">
+      <span class="profile-initial">👤</span>
+    </button>
+  </nav>
+</header>
+
+
+  <main>
+
+    <!-- HERO СТАТЬИ -->
+    <section class="article-page-hero">
+      <div class="article-page-hero-inner container">
+        <div class="article-page-eyebrow badge badge-creative">3D</div>
+
+        <h1 class="article-page-title">
+          ИИ в 3D-моделировании: новая эра дизайна
+        </h1>
+
+        <p class="article-page-lead">
+          Ещё недавно создание 3D-модели требовало месяцев обучения и мощного компьютера.
+          Сейчас нейросети генерируют текстуры, меши и целые сцены по текстовому описанию.
+          Разбираемся, как ИИ меняет индустрию 3D и что это значит для начинающих.
+        </p>
+
+        <a href="articles.html" class="article-back-btn">← Назад к статьям</a>
+      </div>
+    </section>
+
+    <!-- ТЕЛО СТАТЬИ -->
+    <section class="article-body container">
+      <article class="article-content">
+
+        <h2>1. Генерация 3D-моделей из текста</h2>
+        <p>
+          В 2023–2024 годах произошёл прорыв: появились модели, способные
+          создавать трёхмерные объекты по текстовому описанию. OpenAI представила
+          Point-E и Shap-E, Google разработала DreamFusion, а NVIDIA показала
+          Magic3D. Эти системы принимают промт вроде «красный стул в стиле
+          mid-century modern» и генерируют 3D-объект за минуты.
+        </p>
+
+        <p>
+          Качество пока не дотягивает до ручной работы профессионала,
+          но для прототипирования и быстрой визуализации идей это уже рабочий
+          инструмент. Дизайнер может за утро сгенерировать десятки вариантов
+          объекта и выбрать направление, вместо того чтобы моделить каждый вручную.
+        </p>
+
+        <h3>Что это меняет</h3>
+        <p>
+          Порог входа в 3D снижается. Раньше, чтобы визуализировать идею
+          стула, нужно было знать Blender или 3ds Max. Сейчас достаточно
+          описать, что ты хочешь. Это не заменяет профессионалов,
+          но открывает 3D для предпринимателей, маркетологов и дизайнеров
+          без специализации в 3D.
+        </p>
+
+        <h2>2. ИИ-текстурирование</h2>
+        <p>
+          Одна из самых трудоёмких задач в 3D — создание реалистичных текстур.
+          Металл, дерево, ткань, кожа — каждый материал требует точной настройки.
+          ИИ-инструменты вроде Stability AI Stable Texture или встроенных генераторов
+          в Substance 3D от Adobe умеют создавать бесшовные текстуры по описанию.
+        </p>
+
+        <p>
+          Художник пишет «потёртый металл с ржавчиной» — и получает готовую
+          PBR-текстуру (с картами нормалей, roughness, metallic). Это экономит
+          часы работы и позволяет быстро экспериментировать с материалами.
+        </p>
+
+        <h2>3. Blender и экосистема ИИ-плагинов</h2>
+        <p>
+          Blender — бесплатный и самый популярный 3D-редактор в мире —
+          активно интегрирует ИИ. Уже доступны плагины для генерации мешей,
+          автоматического ретопологии (уменьшения полигонов без потери формы)
+          и ИИ-деноизинга при рендере.
+        </p>
+
+        <p>
+          В Blender 4.0 появился улучшенный движок рендеринга и поддержка
+          новых форматов, а сообщество активно разрабатывает дополнения
+          с нейросетевыми функциями. Например, плагин Dream Textures
+          позволяет генерировать текстуры прямо внутри Blender
+          с помощью Stable Diffusion.
+        </p>
+
+        <h3>Почему Blender — лучший старт</h3>
+        <p>
+          Бесплатный, кроссплатформенный, с огромным комьюнити.
+          Тысячи туториалов на YouTube, документация на русском языке,
+          активный форум. Для начинающего это идеальная точка входа в мир 3D.
+        </p>
+
+        <h2>4. NVIDIA Omniverse и промышленное 3D</h2>
+        <p>
+          NVIDIA Omniverse — платформа для совместной работы в 3D
+          с интеграцией ИИ. Она используется в архитектуре, автомобильной
+          промышленности, игровой индустрии и кино. Omniverse позволяет
+          разным командам работать над одной сценой одновременно,
+          а встроенный ИИ помогает с генерацией ландшафтов, освещения
+          и физической симуляцией.
+        </p>
+
+        <p>
+          BMW использует Omniverse для цифровых двойников своих заводов.
+          Архитектурные бюро — для визуализации проектов в реальном времени.
+          Это уже не будущее, это текущий индустриальный стандарт.
+        </p>
+
+        <h2>5. Игры и метавселенные</h2>
+        <p>
+          Игровая индустрия одна из первых начала массово использовать ИИ в 3D.
+          Процедурная генерация уровней, автоматическое создание NPC-моделей,
+          адаптивные текстуры — всё это уже применяется в продакшене.
+        </p>
+
+        <p>
+          Unity и Unreal Engine интегрируют ИИ-инструменты для ускорения
+          разработки. Например, в Unreal Engine 5 система Nanite автоматически
+          оптимизирует детализацию 3D-объектов в зависимости от расстояния камеры,
+          а Lumen обеспечивает глобальное освещение в реальном времени
+          с помощью алгоритмов, близких к нейросетевым.
+        </p>
+
+        <h2>6. С чего начать путь в 3D</h2>
+        <p>
+          Если ты хочешь попробовать 3D-моделирование, вот план:
+        </p>
+
+        <p>
+          1. Установи Blender (бесплатно) и пройди базовый «Donut Tutorial» от Blender Guru.<br />
+          2. Разберись с основными понятиями: меш, полигон, UV-развёртка, текстура, рендер.<br />
+          3. Попробуй ИИ-инструменты: Dream Textures для Blender, Meshy.ai для генерации мешей.<br />
+          4. Практикуйся на нашей платформе — раздел 3D-моделирования с заданиями по уровням.
+        </p>
+
+        <h2>Итог</h2>
+        <p>
+          ИИ не заменяет 3D-художников — он даёт им суперсилу.
+          Рутинные операции ускоряются в разы, порог входа снижается,
+          а креативные возможности расширяются. Для начинающих это лучшее
+          время, чтобы войти в 3D: инструменты стали доступнее,
+          а ИИ помогает учиться быстрее.
+        </p>
+
+        <div class="article-sources">
+          <h3>Источники</h3>
+          <ul>
+            <li>OpenAI Point-E / Shap-E — <a href="https://github.com/openai/shap-e" target="_blank" rel="noopener">github.com/openai/shap-e</a></li>
+            <li>NVIDIA Omniverse — <a href="https://www.nvidia.com/en-us/omniverse/" target="_blank" rel="noopener">nvidia.com/omniverse</a></li>
+            <li>Blender — официальный сайт — <a href="https://www.blender.org/" target="_blank" rel="noopener">blender.org</a></li>
+            <li>Dream Textures (плагин Blender) — <a href="https://github.com/carson-katri/dream-textures" target="_blank" rel="noopener">github.com/carson-katri/dream-textures</a></li>
+            <li>Adobe Substance 3D — <a href="https://www.adobe.com/products/substance3d.html" target="_blank" rel="noopener">adobe.com/substance3d</a></li>
+            <li>Blender Guru, Donut Tutorial — <a href="https://www.youtube.com/playlist?list=PLjEaoINr3zgFX8ZsChQVQsuDSjEqdWMAD" target="_blank" rel="noopener">youtube.com — Blender Guru</a></li>
+          </ul>
+        </div>
+
+      </article>
+    </section>
+
+  </main>
+
+  <button class="scroll-top-btn" aria-label="Наверх">↑</button>
+
+  <footer class="footer">
+    <div class="footer-inner container">
+      <div class="footer-left">© 2026 Центр ИИ-инноваций</div>
+      <div class="footer-right">
+        <a href="index.html#home">Главная</a>
+        <span class="dot">·</span>
+        <a href="guides.html">Методички</a>
+        <span class="dot">·</span>
+        <a href="articles.html">Статьи</a>
+        <span class="dot">·</span>
+        <a href="practices.html">Практики</a>
+        <span class="dot">·</span>
+        <a href="chatbot.html">Чат Бот</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="favorites.js"></script>
+</body>
+</html>

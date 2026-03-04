@@ -1,0 +1,684 @@
+/* ============================================
+   PRACTICES.CSS — Стили страниц практик
+   ============================================ */
+
+/* ========= FULL HEIGHT PAGE ========= */
+html, body {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+}
+main {
+  flex: 1;
+}
+
+/* HERO */
+.practices-hero,
+.practice-hero {
+  position: relative;
+  padding: 8rem 0 3rem;
+  background: #000;
+  background-image:
+    radial-gradient(circle at 40% 40%, rgba(28,151,253,0.15) 0%, transparent 60%),
+    radial-gradient(circle at 80% 60%, rgba(118,75,162,0.12) 0%, transparent 50%);
+  text-align: center;
+}
+.practices-hero-inner,
+.practice-hero-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+.practices-eyebrow,
+.practice-eyebrow {
+  display: inline-block;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--accent-success);
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(0,212,170,0.4);
+  padding: .45rem .75rem;
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 20px rgba(0,212,170,0.3);
+}
+.practices-title,
+.practice-title {
+  font-family: 'Ubuntu', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  color: #fff;
+  text-shadow: 0 12px 30px rgba(0,0,0,0.6);
+}
+.practices-desc {
+  font-family: 'Roboto', system-ui, sans-serif;
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.6;
+  max-width: 550px;
+}
+
+/* SECTION */
+.practices-section {
+  position: relative;
+  background: #000;
+  padding: 3rem 0 6rem;
+  min-height: 400px;
+  flex: 1;
+}
+.practices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+/* ============================================
+   TOPIC CARD
+   ============================================ */
+.topic-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  border-left: 4px solid var(--topic-color, var(--brand-blue));
+}
+.topic-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(28,151,253,0.3);
+  border-left-color: var(--topic-color, var(--brand-blue));
+  box-shadow: 0 20px 48px rgba(0,0,0,0.5), 0 0 24px rgba(28,151,253,0.1);
+}
+.topic-icon { font-size: 2.5rem; }
+.topic-title {
+  font-family: 'Ubuntu', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #fff;
+}
+.topic-desc {
+  font-family: 'Roboto', system-ui, sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.4;
+}
+
+/* PROGRESS BAR */
+.topic-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.topic-progress-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.topic-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand-blue), var(--accent-success));
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+.topic-progress-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+  white-space: nowrap;
+}
+
+/* LEVEL BUTTONS */
+.topic-levels {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.level-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+.level-available {
+  background: rgba(28,151,253,0.15);
+  border: 1px solid rgba(28,151,253,0.4);
+  color: var(--brand-blue);
+}
+.level-available:hover {
+  background: rgba(28,151,253,0.3);
+  transform: translateY(-2px);
+}
+.level-complete {
+  background: rgba(0,212,170,0.15);
+  border: 1px solid rgba(0,212,170,0.4);
+  color: var(--accent-success);
+}
+.level-locked {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.3);
+  cursor: not-allowed;
+}
+
+/* LEVEL LIST (all levels visible) */
+.topic-level-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.level-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.level-row:hover {
+  background: rgba(255,255,255,0.05);
+}
+.level-row.level-row-locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.level-row.level-row-locked:hover {
+  background: rgba(255,255,255,0.02);
+}
+.level-row-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+.level-row-available .level-row-num {
+  background: rgba(28,151,253,0.15);
+  border: 1px solid rgba(28,151,253,0.4);
+  color: var(--brand-blue);
+}
+.level-row-complete .level-row-num {
+  background: rgba(0,212,170,0.15);
+  border: 1px solid rgba(0,212,170,0.4);
+  color: var(--accent-success);
+}
+.level-row-locked .level-row-num {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.3);
+}
+.level-row-info {
+  flex: 1;
+  min-width: 0;
+}
+.level-row-title {
+  font-family: 'Roboto', system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.9);
+}
+.level-row-locked .level-row-title {
+  color: rgba(255,255,255,0.4);
+}
+.level-row-desc {
+  font-family: 'Roboto', system-ui, sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+  margin-top: 2px;
+}
+.level-row-locked .level-row-desc {
+  color: rgba(255,255,255,0.25);
+}
+.level-row-status {
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   PRACTICE PAGE — TASK EXECUTION
+   ============================================ */
+
+.practice-back-btn {
+  display: inline-block;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+  margin-bottom: 0.5rem;
+}
+.practice-back-btn:hover {
+  color: var(--brand-blue);
+}
+
+/* PROGRESS BAR */
+.practice-progress-bar {
+  width: 100%;
+  max-width: 400px;
+  height: 8px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+.practice-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand-blue), var(--accent-success));
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+.practice-progress-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.5);
+  margin-top: 0.25rem;
+}
+
+/* TASK CARD */
+.practice-content {
+  background: #000;
+  padding: 3rem 0 6rem;
+  min-height: 400px;
+}
+.practice-task-card {
+  max-width: 700px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 40px rgba(28,151,253,0.15);
+}
+.task-number {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--brand-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+.task-question {
+  font-family: 'Roboto', system-ui, sans-serif;
+  font-size: 1.1rem;
+  color: #fff;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+/* CHOICE OPTIONS */
+.task-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.option-btn {
+  width: 100%;
+  text-align: left;
+  padding: 1rem 1.25rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-md);
+  color: rgba(255,255,255,0.9);
+  font-family: 'Roboto', system-ui, sans-serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.option-btn:hover:not(:disabled):not(.option-correct):not(.option-wrong) {
+  background: rgba(28,151,253,0.1);
+  border-color: rgba(28,151,253,0.4);
+}
+.option-correct {
+  background: rgba(0,212,170,0.15) !important;
+  border-color: rgba(0,212,170,0.6) !important;
+  color: var(--accent-success) !important;
+}
+.option-wrong {
+  background: rgba(239,68,68,0.15) !important;
+  border-color: rgba(239,68,68,0.5) !important;
+  color: #ef4444 !important;
+}
+
+/* INPUT TASK */
+.task-input-wrapper {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+.task-input {
+  flex: 1;
+  padding: 0.85rem 1rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-md);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+}
+.task-input:focus {
+  outline: none;
+  border-color: var(--brand-blue);
+}
+.task-input::placeholder {
+  color: rgba(255,255,255,0.35);
+}
+.task-input:disabled {
+  opacity: 0.7;
+}
+.task-check-btn {
+  padding: 0.7rem 1.5rem;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--brand-blue), var(--brand-purple-dark));
+  border: none;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 16px rgba(28,151,253,0.25);
+  white-space: nowrap;
+}
+.task-check-btn:hover:not(:disabled) {
+  box-shadow: 0 8px 24px rgba(28,151,253,0.4);
+  transform: translateY(-1px);
+}
+.task-check-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* FEEDBACK */
+.task-feedback {
+  margin-top: 1rem;
+  font-family: 'Roboto', system-ui, sans-serif;
+  font-size: 0.95rem;
+}
+.feedback-correct {
+  color: var(--accent-success);
+  font-weight: 500;
+}
+.feedback-wrong {
+  color: #ef4444;
+  font-weight: 500;
+}
+.feedback-answer {
+  display: block;
+  margin-top: 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+}
+.retry-btn {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: #ef4444;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.retry-btn:hover {
+  background: rgba(239,68,68,0.2);
+}
+
+/* HINT */
+.task-hint {
+  margin-top: 1.5rem;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.4);
+  padding: 0.75rem 1rem;
+  background: rgba(28,151,253,0.05);
+  border-radius: var(--radius-md);
+  border: 1px dashed rgba(28,151,253,0.2);
+}
+.task-hint a {
+  color: var(--brand-blue);
+  text-decoration: none;
+}
+.task-hint a:hover {
+  text-decoration: underline;
+}
+
+/* NAVIGATION */
+.practice-nav {
+  max-width: 700px;
+  margin: 1.5rem auto 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.practice-nav-btn {
+  padding: 0.7rem 1.5rem;
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.8);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.practice-nav-btn:hover:not(:disabled) {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.3);
+}
+.practice-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.practice-nav-next {
+  background: linear-gradient(135deg, var(--brand-blue), var(--brand-purple-dark));
+  border: none;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(28,151,253,0.25);
+}
+.practice-nav-next:hover:not(:disabled) {
+  box-shadow: 0 8px 24px rgba(28,151,253,0.4);
+  transform: translateY(-1px);
+}
+
+/* ============================================
+   OVERLAYS — Level Complete + Subscription
+   ============================================ */
+
+.level-complete-overlay,
+.subscription-lock-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(12px);
+}
+.level-complete-card,
+.subscription-lock-card {
+  text-align: center;
+  max-width: 450px;
+  padding: 3rem;
+  background: rgba(10,10,18,0.95);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+}
+.level-complete-icon,
+.subscription-lock-icon {
+  font-size: 3rem;
+}
+.level-complete-card h2,
+.subscription-lock-card h2 {
+  font-family: 'Ubuntu', system-ui, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+}
+.level-complete-card p,
+.subscription-lock-card p {
+  font-family: 'Roboto', system-ui, sans-serif;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.95rem;
+}
+.level-complete-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+.level-complete-actions .cta-btn,
+.subscription-lock-card .cta-btn {
+  padding: 0.8rem 2rem;
+  font-size: 0.95rem;
+}
+.practice-back-link {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.practice-back-link:hover {
+  color: var(--brand-blue);
+}
+
+/* SUBSCRIPTION */
+.subscription-price {
+  font-family: 'Ubuntu', system-ui, sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--brand-blue);
+}
+.subscription-desc {
+  max-width: 350px;
+}
+.subscription-btn {
+  padding: 0.85rem 2rem;
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.5);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   REWARD TOAST — Achievement popup
+   ============================================ */
+.reward-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(120px);
+  z-index: 2000;
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+  pointer-events: none;
+}
+.reward-toast-visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+.reward-toast-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 1rem 2rem;
+  background: rgba(10, 10, 18, 0.95);
+  border: 1px solid rgba(0, 212, 170, 0.5);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 212, 170, 0.2);
+  backdrop-filter: blur(12px);
+}
+.reward-toast-label {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-success);
+}
+.reward-toast-name {
+  font-family: 'Ubuntu', system-ui, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  .practices-grid {
+    grid-template-columns: 1fr;
+  }
+  .practices-hero,
+  .practice-hero {
+    padding: 6rem 0 2rem;
+  }
+  .practice-task-card {
+    padding: 1.5rem;
+  }
+  .task-input-wrapper {
+    flex-direction: column;
+  }
+  .task-input-wrapper .task-check-btn {
+    align-self: flex-start;
+  }
+  .topic-levels {
+    flex-wrap: wrap;
+  }
+  .level-complete-card,
+  .subscription-lock-card {
+    margin: 1rem;
+    padding: 2rem;
+  }
+}

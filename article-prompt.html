@@ -30,77 +30,20 @@
       <li><a href="index.html#home">Главная</a></li>
       <li><a href="guides.html">Методички</a></li>
       <li><a href="articles.html">Статьи</a></li>
+      <li><a href="practices.html">Практики</a></li>
       <li><a href="chatbot.html">Чат Бот</a></li>
+      <li class="favorites-nav-item" style="display:none;"><a href="favorites.html">Избранное</a></li>
     </ul>
 
-    <a class="profile-icon" href="#auth-modal">
+    <button class="burger-btn" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+
+    <button class="profile-icon" id="profileBtn">
       <span class="profile-initial">👤</span>
-    </a>
+    </button>
   </nav>
 </header>
-
-<!-- ===== МОДАЛКА АВТОРИЗАЦИИ / РЕГИСТРАЦИИ ===== -->
-
-<section id="auth-modal" class="auth-modal-wrapper">
-  <div class="auth-modal-overlay"></div>
-  <div class="auth-modal-card">
-    <a href="#close" class="auth-close-btn">✕</a>
-
-    <div class="auth-modal-inner">
-      <div class="auth-head">
-        <div class="auth-eyebrow">Доступ в платформу</div>
-        <h2 class="auth-title">Вход / Регистрация</h2>
-        <p class="auth-desc">
-          Создай профиль, чтобы сохранять методички, следить за прогрессом и получать ранний доступ к инструментам ИИ.
-        </p>
-      </div>
-
-      <div class="auth-forms">
-
-        <!-- ВХОД -->
-        <div class="auth-block">
-          <h3 class="auth-block-title">Вход</h3>
-
-          <label class="auth-field">
-            <span class="auth-label">Email</span>
-            <input type="email" class="auth-input" placeholder="you@example.com" disabled />
-          </label>
-
-          <label class="auth-field">
-            <span class="auth-label">Пароль</span>
-            <input type="password" class="auth-input" placeholder="••••••••" disabled />
-          </label>
-
-          <button class="auth-btn" disabled>Войти</button>
-        </div>
-
-        <!-- РЕГИСТРАЦИЯ -->
-        <div class="auth-block">
-          <h3 class="auth-block-title">Регистрация</h3>
-
-          <label class="auth-field">
-            <span class="auth-label">Email</span>
-            <input type="email" class="auth-input" placeholder="you@example.com" disabled />
-          </label>
-
-          <label class="auth-field">
-            <span class="auth-label">Пароль</span>
-            <input type="password" class="auth-input" placeholder="Придумайте пароль" disabled />
-          </label>
-
-          <button class="auth-btn" disabled>Создать аккаунт</button>
-        </div>
-
-      </div>
-
-      <div class="auth-hint">
-        Функция регистрации/входа скоро будет доступна 🔧
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="close"></section>
 
 
   <main>
@@ -278,7 +221,7 @@
 
         <h2>6. Что это значит для разработчиков прямо сейчас</h2>
         <p>
-          В 2023–2025 появилось много разговоров "prompt engineer — новая профессия".
+          В 2023–2026 появилось много разговоров "prompt engineer — новая профессия".
           По факту это постепенно просто впитывается в работу обычных разработчиков,
           аналитиков, продакт-менеджеров.
         </p>
@@ -326,14 +269,27 @@
           а в реальную фичу.
         </p>
 
+        <div class="article-sources">
+          <h3>Источники</h3>
+          <ul>
+            <li>OpenAI — Prompt Engineering Guide — <a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank" rel="noopener">platform.openai.com</a></li>
+            <li>Anthropic — Prompt Engineering Documentation — <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering" target="_blank" rel="noopener">docs.anthropic.com</a></li>
+            <li>Google — Introduction to Prompt Design — <a href="https://cloud.google.com/vertex-ai/docs/generative-ai/learn/introduction-prompt-design" target="_blank" rel="noopener">cloud.google.com</a></li>
+            <li>Learn Prompting — Open-Source Prompt Engineering Guide — <a href="https://learnprompting.org/" target="_blank" rel="noopener">learnprompting.org</a></li>
+            <li>Lilian Weng — Prompt Engineering (OpenAI Research) — <a href="https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/" target="_blank" rel="noopener">lilianweng.github.io</a></li>
+          </ul>
+        </div>
+
       </article>
     </section>
 
   </main>
 
+  <button class="scroll-top-btn" aria-label="Наверх">↑</button>
+
   <footer class="footer">
     <div class="footer-inner container">
-      <div class="footer-left">© 2025 Центр ИИ-инноваций</div>
+      <div class="footer-left">© 2026 Центр ИИ-инноваций</div>
       <div class="footer-right">
         <a href="index.html#home">Главная</a>
         <span class="dot">·</span>
@@ -341,10 +297,19 @@
         <span class="dot">·</span>
         <a href="articles.html">Статьи</a>
         <span class="dot">·</span>
+        <a href="practices.html">Практики</a>
+        <span class="dot">·</span>
         <a href="chatbot.html">Чат Бот</a>
       </div>
     </div>
   </footer>
 
+  <script src="main.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="favorites.js"></script>
 </body>
 </html>

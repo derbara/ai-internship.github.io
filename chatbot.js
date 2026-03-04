@@ -1,18 +1,138 @@
 // ==========================================
-// 🔑 OpenRouter API KEY — безопасная загрузка
+// 🔑 OpenRouter API KEY — загружается из localStorage
 // ==========================================
 let OPENROUTER_API_KEY = localStorage.getItem("OPENROUTER_API_KEY");
 
-if (!OPENROUTER_API_KEY) {
-  OPENROUTER_API_KEY = prompt(
-    "Введите ваш OpenRouter API ключ (из openrouter.ai/):"
-  );
-  if (OPENROUTER_API_KEY) {
-    localStorage.setItem("OPENROUTER_API_KEY", OPENROUTER_API_KEY);
-    alert("✅ Ключ сохранён! Теперь чат готов к работе.");
-  } else {
-    alert("❌ Ключ не введён — чат не сможет работать.");
+function ensureApiKey() {
+  if (OPENROUTER_API_KEY) return true;
+  return false;
+}
+
+// options.showCancel — показать кнопку «Отмена» (при смене ключа)
+// options.oldKey — предыдущий ключ для восстановления при отмене
+function showApiKeyScreen(options) {
+  options = options || {};
+  var chatWrapper = document.querySelector('.chat-wrapper');
+  if (!chatWrapper) return;
+
+  var chatWindow = chatWrapper.querySelector('.chat-window');
+  if (chatWindow) chatWindow.style.display = 'none';
+
+  var screen = document.createElement('div');
+  screen.className = 'apikey-screen';
+  screen.id = 'apikeyScreen';
+
+  var cancelBtnHtml = options.showCancel
+    ? '<button class="apikey-cancel" id="apikeyCancel">Отмена</button>'
+    : '';
+
+  screen.innerHTML =
+    '<div class="apikey-card">' +
+      '<div class="apikey-icon">🔑</div>' +
+      '<h2 class="apikey-title">Подключи ИИ-ассистента</h2>' +
+      '<p class="apikey-desc">Для работы чат-бота нужен API-ключ OpenRouter. Это бесплатно и занимает 2 минуты.</p>' +
+
+      '<div class="apikey-steps">' +
+        '<div class="apikey-step">' +
+          '<span class="apikey-step-num">1</span>' +
+          '<div class="apikey-step-text">' +
+            '<strong>Зарегистрируйся</strong> на <a href="https://openrouter.ai/" target="_blank" rel="noopener">openrouter.ai</a> (вход через Google)' +
+          '</div>' +
+        '</div>' +
+        '<div class="apikey-step">' +
+          '<span class="apikey-step-num">2</span>' +
+          '<div class="apikey-step-text">' +
+            '<strong>Создай ключ</strong> в разделе <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">Keys</a> — нажми «Create Key»' +
+          '</div>' +
+        '</div>' +
+        '<div class="apikey-step">' +
+          '<span class="apikey-step-num">3</span>' +
+          '<div class="apikey-step-text">' +
+            '<strong>Скопируй ключ</strong> (начинается с <code>sk-or-...</code>) и вставь ниже' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="apikey-input-group">' +
+        '<input type="password" class="apikey-input" id="apikeyInput" placeholder="sk-or-v1-..." autocomplete="off" spellcheck="false" />' +
+        '<button class="apikey-toggle-vis" id="apikeyToggle" type="button" title="Показать/скрыть">👁</button>' +
+      '</div>' +
+      '<div class="apikey-error" id="apikeyError"></div>' +
+      '<div class="apikey-buttons">' +
+        '<button class="apikey-submit" id="apikeySubmit">Подключить чат-бот</button>' +
+        cancelBtnHtml +
+      '</div>' +
+
+      '<p class="apikey-hint">Ключ хранится только в твоём браузере и не передаётся на наш сервер.</p>' +
+    '</div>';
+
+  chatWrapper.appendChild(screen);
+
+  var input = document.getElementById('apikeyInput');
+  var submit = document.getElementById('apikeySubmit');
+  var toggle = document.getElementById('apikeyToggle');
+  var error = document.getElementById('apikeyError');
+
+  toggle.addEventListener('click', function() {
+    input.type = input.type === 'password' ? 'text' : 'password';
+  });
+
+  function trySubmitKey() {
+    var key = input.value.trim();
+    if (!key) {
+      error.textContent = 'Введи API-ключ';
+      error.style.display = 'block';
+      return;
+    }
+    if (!key.startsWith('sk-')) {
+      error.textContent = 'Ключ должен начинаться с sk-';
+      error.style.display = 'block';
+      return;
+    }
+    error.style.display = 'none';
+    OPENROUTER_API_KEY = key;
+    localStorage.setItem('OPENROUTER_API_KEY', key);
+
+    screen.remove();
+    if (chatWindow) chatWindow.style.display = 'flex';
+    if (!chatInitialized) {
+      chatInitialized = true;
+      initChat();
+    }
   }
+
+  submit.addEventListener('click', trySubmitKey);
+  input.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') trySubmitKey();
+  });
+
+  // Кнопка «Отмена» — восстановить предыдущий ключ и вернуться в чат
+  if (options.showCancel) {
+    var cancelBtn = document.getElementById('apikeyCancel');
+    cancelBtn.addEventListener('click', function() {
+      if (options.oldKey) {
+        OPENROUTER_API_KEY = options.oldKey;
+        localStorage.setItem('OPENROUTER_API_KEY', options.oldKey);
+        chatInitialized = true;
+      }
+      screen.remove();
+      if (chatWindow) chatWindow.style.display = 'flex';
+    });
+  }
+
+  input.focus();
+}
+
+function changeApiKey() {
+  var oldKey = OPENROUTER_API_KEY;
+
+  var chatWindow = document.querySelector('.chat-window');
+  if (chatWindow) chatWindow.style.display = 'none';
+
+  var oldScreen = document.getElementById('apikeyScreen');
+  if (oldScreen) oldScreen.remove();
+
+  showApiKeyScreen({ showCancel: true, oldKey: oldKey });
 }
 
 // ==========================================
@@ -254,8 +374,8 @@ async function initChat() {
   chatInput.placeholder = "Спроси про ИИ, методички или промт-дизайн…";
 
   if (chatHint) {
-    chatHint.textContent = "✨ Чат с DeepSeek R1 готов!";
-    chatHint.style.color = "#10b981";
+    chatHint.textContent = "";
+    chatHint.style.display = "none";
   }
 
   sendButton.addEventListener("click", sendMessage);
@@ -491,15 +611,81 @@ window.clearAllHistory = clearAllHistory;
 window.loadChat = loadChat;
 window.deleteChat = deleteChat;
 window.stopGeneration = stopGeneration;
+window.changeApiKey = changeApiKey;
 
 // ==========================================
-// ЗАПУСК
+// ЗАПУСК (с проверкой авторизации)
 // ==========================================
+let chatInitialized = false;
+
+function initChatWithoutKey() {
+  // Инициализируем чат, но показываем сообщение о необходимости ключа
+  chatMessages = document.querySelector('.chat-messages');
+  chatInput = document.querySelector('.chat-input');
+  sendButton = document.querySelector('.chat-send-btn');
+  chatHint = document.querySelector('.chat-hint');
+  stopButton = document.getElementById('stopBtn');
+
+  if (!chatMessages || !chatInput || !sendButton) return;
+
+  chatMessages.innerHTML = '';
+
+  // Приветственное сообщение с инструкцией
+  var msgDiv = document.createElement('div');
+  msgDiv.className = 'msg msg-bot';
+  msgDiv.innerHTML =
+    '<div class="msg-meta">' +
+      '<span class="msg-role-bot">TEXEL · ИИ-ассистент</span>' +
+    '</div>' +
+    '<div class="msg-bubble">' +
+      '👋 Привет! Я TEXEL — ИИ-ассистент на базе DeepSeek R1.<br><br>' +
+      '⚠️ <strong>Для работы чата нужен API-ключ OpenRouter.</strong><br><br>' +
+      'Нажми кнопку <strong>🔑 Сменить API-ключ</strong> в левой панели, чтобы настроить подключение. Это бесплатно и займёт 2 минуты!' +
+    '</div>';
+  chatMessages.appendChild(msgDiv);
+
+  // Блокируем ввод
+  chatInput.disabled = true;
+  chatInput.placeholder = 'Сначала установи API-ключ →';
+  sendButton.disabled = true;
+
+  if (chatHint) {
+    chatHint.textContent = '🔑 Установи API-ключ, чтобы начать общение';
+    chatHint.style.color = 'rgba(255,107,53,0.8)';
+  }
+}
+
+function startChatWhenAuthed() {
+  if (window.TexelAuth && window.TexelGuard) {
+    window.TexelGuard.guardPage('.chat-area', {
+      title: 'Войдите, чтобы использовать чат',
+      desc: 'Авторизуйтесь для доступа к ИИ-ассистенту TEXEL',
+      icon: '🤖'
+    });
+
+    window.TexelAuth.onReady(function(user) {
+      if (user && !chatInitialized) {
+        if (ensureApiKey()) {
+          chatInitialized = true;
+          initChat();
+        } else {
+          initChatWithoutKey();
+        }
+      }
+    });
+  } else {
+    if (ensureApiKey()) {
+      initChat();
+    } else {
+      initChatWithoutKey();
+    }
+  }
+}
+
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initChat);
+  document.addEventListener("DOMContentLoaded", startChatWhenAuthed);
 } else {
-  initChat();
+  startChatWhenAuthed();
 }
 
 console.log("✅ TEXEL Chat Bot загружен. Используется DeepSeek R1.");
-console.log("💡 Нажми Escape для остановки генерации");

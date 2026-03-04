@@ -142,16 +142,12 @@
   box-shadow:
     0 30px 60px rgba(0,0,0,0.8),
     0 0 40px rgba(28,151,253,0.15);
-  transition: box-shadow .25s ease, border .25s ease;
+  transition: transform 0.3s ease, box-shadow .3s ease, border .25s ease;
 }
 
 .article-card:hover {
-  border: 1px solid transparent;
-  border-image: linear-gradient(
-    to bottom right,
-    var(--brand-blue),
-    var(--brand-purple-dark)
-  ) 1;
+  transform: translateY(-6px);
+  border-color: rgba(28,151,253,0.5);
   box-shadow:
     0 0 30px rgba(28,151,253,0.4),
     0 40px 80px rgba(0,0,0,0.9);
@@ -258,13 +254,10 @@
   box-shadow:
     0 0 20px rgba(28,151,253,0.6),
     0 20px 40px rgba(0,0,0,0.6);
-  border-image: linear-gradient(
-    90deg,
-    var(--brand-blue),
-    var(--brand-purple-dark)
-  ) 1;
+  border-color: var(--brand-blue);
   background: rgba(255,255,255,0.07);
   color: var(--brand-blue);
+  transform: translateY(-2px);
 }
 
 /* ПОДПИСКА */
@@ -376,12 +369,9 @@
   box-shadow:
     0 0 20px rgba(28,151,253,0.6),
     0 20px 40px rgba(0,0,0,0.6);
-  border-image: linear-gradient(
-    90deg,
-    var(--brand-blue),
-    var(--brand-purple-dark)
-  ) 1;
+  border-color: var(--brand-blue);
   background: rgba(255,255,255,0.1);
+  transform: translateY(-2px);
 }
 
 .subscribe-hint {
@@ -520,16 +510,10 @@
 
   background: rgba(255,255,255,0.05);
   border-radius: var(--radius-md);
-  border: 2px solid rgba(255,255,255,0.6);
+  border: 2px solid rgba(28,151,253,0.5);
 
   padding: .7rem 1rem;
   box-shadow: 0 16px 32px rgba(0,0,0,0.5);
-
-  border-image: linear-gradient(
-    to bottom right,
-    var(--brand-blue),
-    var(--brand-purple-dark)
-  ) 1;
 
   transition: all .25s ease;
 }
@@ -590,6 +574,46 @@
   font-size: 1rem;
   line-height: 1.6;
   text-shadow: 0 10px 24px rgba(0,0,0,0.6);
+}
+
+/* SOURCES */
+.article-sources {
+  margin-top: 3rem;
+  padding: 1.5rem 2rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  border-left: 4px solid var(--brand-blue);
+}
+.article-sources h3 {
+  font-family: 'Ubuntu', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 0.75rem;
+}
+.article-sources ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.article-sources li {
+  font-family: 'Roboto', system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.4;
+}
+.article-sources a {
+  color: var(--brand-blue);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.article-sources a:hover {
+  color: var(--accent-success);
+  text-decoration: underline;
 }
 
 /* адаптив */
