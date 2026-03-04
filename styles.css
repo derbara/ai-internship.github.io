@@ -927,6 +927,32 @@ body {
   color: rgba(255, 255, 255, 0.35);
 }
 
+/* Password eye toggle */
+.auth-password-wrap {
+  position: relative;
+}
+.auth-password-wrap .auth-input {
+  padding-right: 2.8rem;
+}
+.auth-eye-btn {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+.auth-eye-btn:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 /* Submit button */
 .auth-btn {
   display: block;
