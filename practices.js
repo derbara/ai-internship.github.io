@@ -78,14 +78,6 @@
       return;
     }
 
-    if (window.TexelGuard) {
-      window.TexelGuard.guardPage('main', {
-        title: 'Требуется регистрация',
-        desc: 'Зарегистрируйтесь или войдите в аккаунт, чтобы получить доступ к практическим заданиям по программированию и 3D',
-        icon: '🔒'
-      });
-    }
-
     grid.innerHTML = '';
     Object.entries(PRACTICES_DATA).forEach(function (entry) {
       var key = entry[0];
@@ -532,6 +524,14 @@
     var isTaskPage = document.getElementById('taskCard');
 
     if (isTopicsPage) {
+      // Guard — сразу показываем lock screen для незалогиненных
+      if (window.TexelGuard) {
+        window.TexelGuard.guardPage('main', {
+          title: 'Требуется регистрация',
+          desc: 'Зарегистрируйтесь или войдите в аккаунт, чтобы получить доступ к практическим заданиям по программированию и 3D',
+          icon: '🔒'
+        });
+      }
       if (window.TexelAuth) {
         window.TexelAuth.onReady(function () { initTopicsPage(); });
       } else {
