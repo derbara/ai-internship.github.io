@@ -4,7 +4,6 @@
 
 # 🔐 СЕКРЕТНЫЕ ФАЙЛЫ (API ключи)
 config.js
-firebase-config.js
 .env
 .env.local
 .env.production
