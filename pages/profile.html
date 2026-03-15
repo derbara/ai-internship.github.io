@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Избранное — TEXEL</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="articles.css" />
+  <title>Личный кабинет — TEXEL</title>
+  <link rel="stylesheet" href="../css/styles.css" />
 </head>
 <body>
 
@@ -14,7 +13,7 @@
     <div class="brand">
       <div class="brand-left">
         <div class="brand-logo">
-          <img src="pic/logo-texel.png" alt="Texel logo" class="brand-logo-img" />
+          <img src="../pic/logo-texel.png" alt="Texel logo" class="brand-logo-img" />
         </div>
         <div class="brand-text">
           <div class="texel-word">TEXEL</div>
@@ -24,7 +23,7 @@
     </div>
 
     <ul class="nav-links">
-      <li><a href="index.html#home">Главная</a></li>
+      <li><a href="../index.html#home">Главная</a></li>
       <li><a href="guides.html">Методички</a></li>
       <li><a href="articles.html">Статьи</a></li>
       <li><a href="practices.html">Практики</a></li>
@@ -43,33 +42,44 @@
 </header>
 
   <main>
+    <div class="profile-page" id="profilePage">
 
-    <section class="articles-hero">
-      <div class="container">
-        <div class="articles-hero-inner">
-          <div class="articles-eyebrow" data-reveal>Ваша коллекция</div>
-          <h1 class="articles-title" data-reveal>Избранное</h1>
-          <p class="articles-desc">
-            Сохранённые статьи и методички — всё в одном месте.
-          </p>
+      <!-- HERO -->
+      <section class="profile-hero">
+        <div class="container">
+          <div class="profile-hero-inner">
+            <div class="profile-avatar" id="profileAvatarBig">U</div>
+            <h1 class="profile-user-name" id="profileUserName">Пользователь</h1>
+            <p class="profile-user-email" id="profileUserEmail"></p>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="favorites-section" id="favoritesContent">
-      <div class="container">
-        <div class="articles-grid" id="favoritesGrid">
-          <!-- Populated by favorites-page.js -->
+      <!-- ПРОГРЕСС -->
+      <section class="profile-section">
+        <div class="container">
+          <h2 class="profile-section-title">Прогресс по темам</h2>
+          <div class="profile-progress-grid" id="progressGrid"></div>
         </div>
+      </section>
 
-        <div class="favorites-empty" id="favoritesEmpty" style="display:none;">
-          <div class="favorites-empty-icon">📑</div>
-          <p class="favorites-empty-text">У вас пока нет сохранённых материалов</p>
-          <a href="articles.html" class="cta-btn">Перейти к статьям</a>
+      <!-- ТИТУЛЫ -->
+      <section class="profile-section">
+        <div class="container">
+          <h2 class="profile-section-title">Титулы</h2>
+          <div class="profile-titles-grid" id="titlesGrid"></div>
         </div>
-      </div>
-    </section>
+      </section>
 
+      <!-- ДОСТИЖЕНИЯ -->
+      <section class="profile-section" style="padding-bottom: 4rem;">
+        <div class="container">
+          <h2 class="profile-section-title">Достижения</h2>
+          <div class="profile-achievements-grid" id="achievementsGrid"></div>
+        </div>
+      </section>
+
+    </div>
   </main>
 
   <button class="scroll-top-btn" aria-label="Наверх">↑</button>
@@ -78,7 +88,7 @@
     <div class="footer-inner container">
       <div class="footer-left">© 2026 Центр ИИ-инноваций</div>
       <div class="footer-right">
-        <a href="index.html#home">Главная</a>
+        <a href="../index.html#home">Главная</a>
         <span class="dot">·</span>
         <a href="guides.html">Методички</a>
         <span class="dot">·</span>
@@ -91,13 +101,13 @@
     </div>
   </footer>
 
-  <script src="main.js"></script>
+  <script src="../js/main.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-  <script src="firebase-config.js"></script>
-  <script src="auth.js"></script>
-  <script src="auth-guard.js"></script>
-  <script src="favorites.js"></script>
-  <script src="favorites-page.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/auth-guard.js"></script>
+  <script src="../js/profile.js"></script>
 </body>
 </html>
