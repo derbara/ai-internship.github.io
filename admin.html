@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Админ-панель — TEXEL</title>
+  <!-- <link rel="stylesheet" href="styles.css" /> -->
+  <link rel="stylesheet" href="admin.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&family=Roboto:wght@400;500&family=Poppins:wght@500;600&family=JetBrains+Mono:wght@400&display=swap');
+    :root {
+      --brand-blue: #1C97FD;
+      --brand-purple-dark: #764BA2;
+      --brand-purple-mid: #667EEA;
+      --accent-success: #00D4AA;
+      --accent-warn: #FF6B35;
+      --radius-lg: 20px;
+      --radius-md: 16px;
+      --radius-full: 999px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0A0A12; color: #fff; font-family: 'Roboto', sans-serif; }
+  </style>
+</head>
+<body>
+
+  <!-- ===== ЭКРАН ВХОДА ===== -->
+  <div id="adminLogin" style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 30%,rgba(118,75,162,0.4) 0%,transparent 50%),radial-gradient(circle at 70% 70%,rgba(28,151,253,0.3) 0%,transparent 50%),#0A0A12;">
+    <div style="background:rgba(20,20,40,0.95);border:1px solid rgba(255,255,255,0.25);border-radius:20px;backdrop-filter:blur(16px);padding:2.5rem;width:90%;max-width:400px;text-align:center;box-shadow:0 30px 60px rgba(0,0,0,0.8),0 0 40px rgba(28,151,253,0.15);">
+      <div style="font-size:3rem;margin-bottom:1rem;">🔐</div>
+      <h1 style="font-family:Ubuntu,sans-serif;font-weight:700;font-size:1.5rem;color:#fff;margin-bottom:0.5rem;">Админ-панель</h1>
+      <p style="color:rgba(255,255,255,0.6);font-size:0.9rem;margin-bottom:1.5rem;">Войдите для управления платформой TEXEL</p>
+
+      <form id="adminLoginForm" autocomplete="off">
+        <input type="text" id="adminUser" style="width:100%;padding:0.8rem 1rem;border-radius:16px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.08);color:#fff;font-family:Roboto,sans-serif;font-size:0.95rem;margin-bottom:0.75rem;box-sizing:border-box;" placeholder="Логин" autocomplete="off" />
+        <input type="password" id="adminPass" style="width:100%;padding:0.8rem 1rem;border-radius:16px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.08);color:#fff;font-family:Roboto,sans-serif;font-size:0.95rem;margin-bottom:0.75rem;box-sizing:border-box;" placeholder="Пароль" autocomplete="off" />
+        <div id="adminLoginError" style="color:#ff6b6b;font-size:0.85rem;min-height:1.2em;margin-bottom:0.5rem;"></div>
+        <button type="submit" style="width:100%;padding:0.7rem 1.2rem;border-radius:16px;border:none;background:linear-gradient(135deg,#1C97FD,#764BA2);color:#fff;font-family:Poppins,sans-serif;font-weight:500;font-size:0.9rem;cursor:pointer;">Войти</button>
+      </form>
+
+      <a href="index.html" style="display:inline-block;margin-top:1.2rem;color:rgba(255,255,255,0.5);font-size:0.85rem;text-decoration:none;">← Вернуться на сайт</a>
+    </div>
+  </div>
+
+  <!-- ===== ПАНЕЛЬ УПРАВЛЕНИЯ ===== -->
+  <div id="adminPanel" class="admin-panel" style="display:none;">
+
+    <!-- HEADER -->
+    <header class="admin-header">
+      <div class="admin-header-left">
+        <img src="pic/logo-texel.png" alt="TEXEL" class="admin-logo" />
+        <span class="admin-header-title">TEXEL — Админ-панель</span>
+      </div>
+      <button id="adminLogout" class="admin-btn admin-btn-outline admin-btn-sm">Выйти</button>
+    </header>
+
+    <div class="admin-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="admin-sidebar">
+        <nav class="admin-nav">
+          <button class="admin-nav-item active" data-section="dashboard">
+            <span class="admin-nav-icon">📊</span>
+            <span>Дашборд</span>
+          </button>
+          <button class="admin-nav-item" data-section="practices">
+            <span class="admin-nav-icon">🧩</span>
+            <span>Практики</span>
+          </button>
+          <button class="admin-nav-item" data-section="articles">
+            <span class="admin-nav-icon">📝</span>
+            <span>Статьи</span>
+          </button>
+          <button class="admin-nav-item" data-section="guides">
+            <span class="admin-nav-icon">📚</span>
+            <span>Методички</span>
+          </button>
+        </nav>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="admin-main">
+
+        <!-- ДАШБОРД -->
+        <section id="sec-dashboard" class="admin-section">
+          <h2 class="admin-section-title">Дашборд</h2>
+          <div id="dashboardStats" class="admin-stats-grid"></div>
+
+          <h3 class="admin-subtitle">Быстрые действия</h3>
+          <div class="admin-quick-actions">
+            <button class="admin-btn admin-btn-primary" onclick="Admin.goToAddTask()">+ Задание</button>
+            <button class="admin-btn admin-btn-primary" onclick="Admin.goToAddArticle()">+ Статья</button>
+            <button class="admin-btn admin-btn-primary" onclick="Admin.goToAddGuide()">+ Методичка</button>
+            <button class="admin-btn admin-btn-outline" onclick="Admin.exportData()">📥 Экспорт JSON</button>
+          </div>
+        </section>
+
+        <!-- ПРАКТИКИ -->
+        <section id="sec-practices" class="admin-section" style="display:none;">
+          <div id="practicesContent"></div>
+        </section>
+
+        <!-- СТАТЬИ -->
+        <section id="sec-articles" class="admin-section" style="display:none;">
+          <div class="admin-section-header">
+            <h2 class="admin-section-title">Статьи</h2>
+            <button class="admin-btn admin-btn-primary admin-btn-sm" onclick="Admin.showArticleForm()">+ Добавить</button>
+          </div>
+          <div id="articlesContent"></div>
+        </section>
+
+        <!-- МЕТОДИЧКИ -->
+        <section id="sec-guides" class="admin-section" style="display:none;">
+          <div class="admin-section-header">
+            <h2 class="admin-section-title">Методички</h2>
+            <button class="admin-btn admin-btn-primary admin-btn-sm" onclick="Admin.showGuideForm()">+ Добавить</button>
+          </div>
+          <div id="guidesContent"></div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- МОДАЛКА ДЛЯ ФОРМ -->
+  <div id="adminModal" class="admin-modal" style="display:none;">
+    <div class="admin-modal-overlay"></div>
+    <div class="admin-modal-card">
+      <div class="admin-modal-header">
+        <h3 id="adminModalTitle" class="admin-modal-title"></h3>
+        <button class="admin-modal-close" onclick="Admin.closeModal()">&times;</button>
+      </div>
+      <div id="adminModalBody" class="admin-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- ТОСТ -->
+  <div id="adminToast" class="admin-toast"></div>
+
+  <!-- ПОДТВЕРЖДЕНИЕ -->
+  <div id="adminConfirm" class="admin-modal" style="display:none;">
+    <div class="admin-modal-overlay"></div>
+    <div class="admin-modal-card admin-confirm-card">
+      <p id="adminConfirmText" class="admin-confirm-text"></p>
+      <div class="admin-confirm-actions">
+        <button id="adminConfirmYes" class="admin-btn admin-btn-danger admin-btn-sm">Удалить</button>
+        <button class="admin-btn admin-btn-outline admin-btn-sm" onclick="Admin.closeConfirm()">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="practices-data.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

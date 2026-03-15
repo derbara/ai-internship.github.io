@@ -5,57 +5,106 @@
 
 (function () {
 
-  const STORAGE_KEY = 'texel_practice_progress';
-
   // =============================================
-  // 1. ПРОГРЕСС
+  // 1. ПРОГРЕСС (Firestore + localStorage fallback)
   // =============================================
 
-  function getProgress() {
+  var db = null;
+  var cachedProgress = {};
+
+  function initFirestore() {
     try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-    } catch { return {}; }
-  }
-
-  function saveProgress(progress) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+      if (firebase && firebase.firestore) {
+        db = firebase.firestore();
+      }
+    } catch(e) { console.warn('Firestore not available:', e); }
   }
 
   function getUserId() {
     if (window.TexelAuth) {
-      const user = window.TexelAuth.getCurrentUser();
-      return user ? user.uid : 'anonymous';
+      var user = window.TexelAuth.getCurrentUser();
+      return user ? user.uid : null;
     }
-    return 'anonymous';
+    return null;
+  }
+
+  function getUserDisplayName() {
+    if (window.TexelAuth) {
+      var user = window.TexelAuth.getCurrentUser();
+      return user ? (user.displayName || user.email || 'Unknown') : '';
+    }
+    return '';
   }
 
   function getUserProgress() {
-    const progress = getProgress();
-    return progress[getUserId()] || {};
+    return cachedProgress;
+  }
+
+  function loadUserProgress(callback) {
+    var uid = getUserId();
+    if (!uid) { cachedProgress = {}; if (callback) callback(); return; }
+
+    if (db) {
+      db.collection('user_progress').doc(uid).get().then(function(doc) {
+        cachedProgress = doc.exists ? doc.data().progress || {} : {};
+        if (callback) callback();
+      }).catch(function(e) {
+        console.warn('Firestore read failed, using localStorage:', e);
+        loadFromLocalStorage(uid);
+        if (callback) callback();
+      });
+    } else {
+      loadFromLocalStorage(uid);
+      if (callback) callback();
+    }
+  }
+
+  function loadFromLocalStorage(uid) {
+    try {
+      var data = JSON.parse(localStorage.getItem('texel_practice_progress')) || {};
+      cachedProgress = data[uid] || {};
+    } catch(e) { cachedProgress = {}; }
+  }
+
+  function saveProgressToFirestore() {
+    var uid = getUserId();
+    if (!uid) return;
+
+    if (db) {
+      db.collection('user_progress').doc(uid).set({
+        progress: cachedProgress,
+        displayName: getUserDisplayName(),
+        updatedAt: new Date().toISOString()
+      }, { merge: true }).catch(function(e) {
+        console.warn('Firestore write failed:', e);
+      });
+    }
+
+    // Also save to localStorage as backup
+    try {
+      var all = JSON.parse(localStorage.getItem('texel_practice_progress')) || {};
+      all[uid] = cachedProgress;
+      localStorage.setItem('texel_practice_progress', JSON.stringify(all));
+    } catch(e) {}
   }
 
   function setLevelComplete(topic, levelIndex, score, total) {
-    const progress = getProgress();
-    const uid = getUserId();
-    if (!progress[uid]) progress[uid] = {};
-    if (!progress[uid][topic]) progress[uid][topic] = {};
-    progress[uid][topic][levelIndex] = {
+    if (!cachedProgress[topic]) cachedProgress[topic] = {};
+    cachedProgress[topic][levelIndex] = {
       score: score,
       total: total,
       completedAt: new Date().toISOString()
     };
-    saveProgress(progress);
+    saveProgressToFirestore();
   }
 
   function isLevelComplete(topic, levelIndex) {
-    const up = getUserProgress();
-    return !!(up[topic] && up[topic][levelIndex]);
+    return !!(cachedProgress[topic] && cachedProgress[topic][levelIndex]);
   }
 
   function getTopicCompletedCount(topic) {
-    const up = getUserProgress();
-    if (!up[topic]) return 0;
-    return Object.keys(up[topic]).length;
+    if (!cachedProgress[topic]) return 0;
+    return Object.keys(cachedProgress[topic]).length;
   }
 
   function isLevelUnlocked(topic, levelIndex) {
@@ -513,6 +562,8 @@
   // =============================================
 
   function init() {
+    initFirestore();
+
     // "Назад к темам" — clear saved URL so topics page shows normally
     document.querySelectorAll('.practice-back-btn, .practice-back-link').forEach(function (link) {
       link.addEventListener('click', function () {
@@ -538,18 +589,15 @@
       if (window.TexelAuth) {
         window.TexelAuth.onReady(function (user) {
           if (user) {
-            // Залогинен — показать контент, скрыть lock
             if (lockSection) lockSection.style.display = 'none';
             if (mainContent) mainContent.style.display = '';
-            initTopicsPage();
+            loadUserProgress(function() { initTopicsPage(); });
           } else {
-            // Не залогинен — показать lock, скрыть контент
             if (lockSection) lockSection.style.display = '';
             if (mainContent) mainContent.style.display = 'none';
           }
         });
       } else {
-        // Нет Firebase — показать контент без ограничений
         if (lockSection) lockSection.style.display = 'none';
         if (mainContent) mainContent.style.display = '';
         initTopicsPage();
@@ -559,7 +607,7 @@
     if (isTaskPage) {
       if (window.TexelAuth) {
         window.TexelAuth.onReady(function (user) {
-          if (user) initPracticePage();
+          if (user) loadUserProgress(function() { initPracticePage(); });
         });
         if (window.TexelGuard) {
           window.TexelGuard.guardPage('.practice-content', {

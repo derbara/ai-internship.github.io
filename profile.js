@@ -5,7 +5,15 @@
 
 (function () {
 
-  var STORAGE_KEY = 'texel_practice_progress';
+  var db = null;
+
+  function initFirestore() {
+    try {
+      if (firebase && firebase.firestore) {
+        db = firebase.firestore();
+      }
+    } catch(e) {}
+  }
 
   // =============================================
   // 1. ДАННЫЕ ДОСТИЖЕНИЙ
@@ -101,9 +109,23 @@
   // 2. УТИЛИТЫ
   // =============================================
 
-  function getUserProgress(uid) {
+  function getUserProgress(uid, callback) {
+    if (db) {
+      db.collection('user_progress').doc(uid).get().then(function(doc) {
+        var progress = doc.exists ? doc.data().progress || {} : {};
+        callback(progress);
+      }).catch(function(e) {
+        console.warn('Firestore read failed, using localStorage:', e);
+        callback(getLocalProgress(uid));
+      });
+    } else {
+      callback(getLocalProgress(uid));
+    }
+  }
+
+  function getLocalProgress(uid) {
     try {
-      var data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+      var data = JSON.parse(localStorage.getItem('texel_practice_progress')) || {};
       return data[uid] || {};
     } catch (e) { return {}; }
   }
@@ -127,7 +149,6 @@
 
   function renderProfile(user) {
     var uid = user.uid;
-    var progress = getUserProgress(uid);
 
     // User info
     var name = user.displayName || 'Пользователь';
@@ -141,9 +162,11 @@
     if (nameEl) nameEl.textContent = name;
     if (emailEl) emailEl.textContent = email;
 
-    renderProgressCards(progress);
-    renderTitles(progress);
-    renderAchievements(progress);
+    getUserProgress(uid, function(progress) {
+      renderProgressCards(progress);
+      renderTitles(progress);
+      renderAchievements(progress);
+    });
   }
 
   function renderProgressCards(progress) {
@@ -238,6 +261,8 @@
   }
 
   function init() {
+    initFirestore();
+
     // Guard entire profile page behind auth
     if (window.TexelGuard) {
       window.TexelGuard.guardPage('.profile-page', {
