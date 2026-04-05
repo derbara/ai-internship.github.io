@@ -1660,4 +1660,51 @@ body.page-loaded {
   .profile-titles-grid { flex-direction: column; }
   .profile-achievements-grid { grid-template-columns: 1fr; }
 }
+.auth-yandex-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  width: 100%;
+  padding: 12px 16px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #FC3F1D; /* фирменный Яндекс */
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* hover */
+.auth-yandex-btn:hover {
+  background: #e63614;
+  transform: translateY(-1px);
+}
+
+/* active */
+.auth-yandex-btn:active {
+  transform: scale(0.98);
+}
+
+/* логотип */
+.yandex-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 22px;
+  height: 22px;
+
+  background: white;
+  color: #FC3F1D;
+
+  border-radius: 6px;
+  font-weight: bold;
+}
 
