@@ -33,7 +33,9 @@
             </svg>
             Войти через Google
           </button>
-
+<button class="auth-yandex-btn" id="yandexLoginBtn">
+  Войти через Яндекс
+</button>
           <div class="auth-divider"><span>или</span></div>
 
           <form id="loginForm" class="auth-form">
@@ -76,7 +78,9 @@
             </svg>
             Войти через Google
           </button>
-
+<button class="auth-yandex-btn" id="yandexLoginBtn">
+  Войти через Яндекс
+</button>
           <div class="auth-divider"><span>или</span></div>
 
           <form id="registerForm" class="auth-form">
@@ -266,7 +270,45 @@
   function logout(auth) {
     auth.signOut().then(() => closeModal());
   }
+function loginWithYandex() {
+  const clientId = '49caed66fd8d446e9af41e7ae42943ab';
+  const redirectUri = encodeURIComponent(
+    'https://derbara.github.io/ai-internship.github.io/index.html'
+  ); 
+   const url = `https://oauth.yandex.ru/authorize?response_type=token&client_id=${clientId}&redirect_uri=${redirectUri}`;
 
+  window.location.href = url;
+}
+function handleYandexAuth() {
+  const hash = window.location.hash.substring(1);
+  const params = new URLSearchParams(hash);
+
+  const token = params.get('access_token');
+  if (!token) return;
+
+  fetch('https://login.yandex.ru/info', {
+    headers: {
+      Authorization: `OAuth ${token}`
+    }
+  })
+    .then(res => res.json())
+    .then(user => {
+      console.log('Yandex user:', user);
+
+      // сохраняем пользователя
+      localStorage.setItem('yandexUser', JSON.stringify(user));
+
+      // обновляем UI
+      currentUser = {
+        displayName: user.display_name,
+        email: user.default_email
+      };
+
+      updateProfileIcon(currentUser);
+      updateProfileView(currentUser);
+      closeModal();
+    });
+}
   // =============================================
   // 5. ИНИЦИАЛИЗАЦИЯ
   // =============================================
@@ -354,6 +396,9 @@
     document.getElementById('googleLoginBtn').addEventListener('click', () => loginWithGoogle(auth));
     document.getElementById('googleRegBtn').addEventListener('click', () => loginWithGoogle(auth));
 
+     //yandex
+     document.getElementById('yandexLoginBtn')
+  .addEventListener('click', loginWithYandex); 
     // Email login
     document.getElementById('loginForm').addEventListener('submit', (e) => {
       e.preventDefault();
