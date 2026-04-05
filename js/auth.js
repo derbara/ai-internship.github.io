@@ -314,6 +314,21 @@ function handleYandexAuth() {
   // =============================================
   document.addEventListener('DOMContentLoaded', () => {
     injectAuthModal();
+      handleYandexAuth();
+    // восстановление пользователя Яндекс
+const savedUser = localStorage.getItem('yandexUser');
+
+if (savedUser) {
+  const user = JSON.parse(savedUser);
+
+  currentUser = {
+    displayName: user.display_name,
+    email: user.default_email
+  };
+
+  updateProfileIcon(currentUser);
+  updateProfileView(currentUser);
+}
 
     const auth = initFirebase();
 
