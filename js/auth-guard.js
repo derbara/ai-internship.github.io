@@ -41,6 +41,7 @@
 
     if (window.TexelAuth) {
       window.TexelAuth.onReady((user) => {
+         const yandexUser = localStorage.getItem('yandexUser');
         lockScreen.style.display = user ? 'none' : 'flex';
       });
     }
@@ -55,17 +56,18 @@
     if (!window.TexelAuth) return;
 
     window.TexelAuth.onReady((user) => {
-      // Показать/скрыть "Избранное" в навигации
-      document.querySelectorAll('.favorites-nav-item').forEach(el => {
-        el.style.display = user ? '' : 'none';
-      });
+  const yandexUser = localStorage.getItem('yandexUser');
+  const isAuth = user || yandexUser;
 
-      // Скрыть CTA секцию для залогиненных
-      const cta = document.getElementById('register-cta');
-      if (cta) {
-        cta.style.display = user ? 'none' : '';
-      }
-    });
+  document.querySelectorAll('.favorites-nav-item').forEach(el => {
+    el.style.display = isAuth ? '' : 'none';
+  });
+
+  const cta = document.getElementById('register-cta');
+  if (cta) {
+    cta.style.display = isAuth ? 'none' : '';
+  }
+});
 
     // CTA кнопка "Войти"
     const ctaBtn = document.getElementById('ctaLoginBtn');
