@@ -270,18 +270,23 @@
   function logout(auth) {
     auth.signOut().then(() => closeModal());
   }
+   
 function loginWithYandex() {
   const clientId = '49caed66fd8d446e9af41e7ae42943ab';
   const redirectUri = encodeURIComponent(
-    'https://derbara.github.io/ai-internship.github.io/index.html'
+    'https://derbara.github.io/ai-internship.github.io/'
   ); 
    const url = `https://oauth.yandex.ru/authorize?response_type=token&client_id=${clientId}&redirect_uri=${redirectUri}`;
 
   window.location.href = url;
 }
 function handleYandexAuth() {
-  const hash = window.location.hash.substring(1);
-  const params = new URLSearchParams(hash);
+  const fullUrl = window.location.href;
+
+  if (!fullUrl.includes('access_token')) return;
+
+  const hashPart = fullUrl.split('#')[1];
+  const params = new URLSearchParams(hashPart);
 
   const token = params.get('access_token');
   if (!token) return;
@@ -295,10 +300,8 @@ function handleYandexAuth() {
     .then(user => {
       console.log('Yandex user:', user);
 
-      // сохраняем пользователя
       localStorage.setItem('yandexUser', JSON.stringify(user));
 
-      // обновляем UI
       currentUser = {
         displayName: user.display_name,
         email: user.default_email
@@ -306,6 +309,8 @@ function handleYandexAuth() {
 
       updateProfileIcon(currentUser);
       updateProfileView(currentUser);
+
+      window.location.hash = '';
       closeModal();
     });
 }
