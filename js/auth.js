@@ -345,7 +345,7 @@ if (savedUser) {
       dropdown.className = 'profile-dropdown';
       dropdown.id = 'profileDropdown';
       dropdown.innerHTML = `
-        <a href="profile.html" class="profile-dropdown-item">👤 Личный кабинет</a>
+        <a href="pages/profile.html" class="profile-dropdown-item">👤 Личный кабинет</a>
         <button class="profile-dropdown-item profile-dropdown-logout" id="dropdownLogout">🚪 Выход</button>
       `;
       profileBtn.parentElement.style.position = 'relative';
@@ -417,8 +417,8 @@ if (savedUser) {
     document.getElementById('googleRegBtn').addEventListener('click', () => loginWithGoogle(auth));
 
      //yandex
-     document.getElementById('yandexLoginBtn')
-  .addEventListener('click', loginWithYandex); 
+  document.querySelectorAll('#yandexLoginBtn')
+  .forEach(btn => btn.addEventListener('click', loginWithYandex));
     // Email login
     document.getElementById('loginForm').addEventListener('submit', (e) => {
       e.preventDefault();
