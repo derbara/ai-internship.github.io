@@ -297,22 +297,28 @@ function handleYandexAuth() {
     }
   })
     .then(res => res.json())
-    .then(user => {
-      console.log('Yandex user:', user);
+   .then(user => {
+  console.log('Yandex user:', user);
 
-      localStorage.setItem('yandexUser', JSON.stringify(user));
+  localStorage.setItem('yandexUser', JSON.stringify(user));
 
-      currentUser = {
-        displayName: user.display_name,
-        email: user.default_email
-      };
+  currentUser = {
+    displayName: user.display_name,
+    email: user.default_email
+  };
 
-      updateProfileIcon(currentUser);
-      updateProfileView(currentUser);
+  updateProfileIcon(currentUser);
+  updateProfileView(currentUser);
 
-      window.location.hash = '';
-      closeModal();
-    });
+  
+  authResolved = true;
+  window.dispatchEvent(new CustomEvent('texel-auth-changed', {
+    detail: { user: currentUser }
+  }));
+
+  window.location.hash = '';
+  closeModal();
+});
 }
   // =============================================
   // 5. ИНИЦИАЛИЗАЦИЯ
