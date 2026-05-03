@@ -34,6 +34,15 @@
     return href;
   }
 
+  // Если у статьи есть контент — всегда открываем через универсальный шаблон,
+  // игнорируя битый href (например, если юзер ввёл несуществующее имя файла)
+  function articleHref(a) {
+    if (a.content && a.id) {
+      return 'article.html?id=' + encodeURIComponent(a.id);
+    }
+    return normalizeHref(a.href);
+  }
+
   // ===== СТАТЬИ =====
   function applyArticles(articles) {
     var grid = document.querySelector('.articles-grid');
@@ -53,7 +62,7 @@
       card.innerHTML = topHTML +
         '<h2 class="article-headline">' + (a.headline || '') + '</h2>' +
         '<p class="article-text">' + (a.description || '') + '</p>' +
-        '<a class="article-btn" href="' + normalizeHref(a.href) + '">Читать &rarr;</a>';
+        '<a class="article-btn" href="' + articleHref(a) + '">Читать &rarr;</a>';
 
       grid.appendChild(card);
     });

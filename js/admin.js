@@ -743,8 +743,11 @@ const Admin = (function() {
 
     if (!headline || !id) { showToast('Заполните заголовок и ID', 'error'); return; }
 
-    // Если href не указан — автоссылка на универсальный шаблон
-    if (!href) href = 'article.html?id=' + encodeURIComponent(id);
+    // Если есть контент или href не указан — всегда универсальный шаблон.
+    // Это избавляет от случаев, когда у статьи остался старый битый href.
+    if (content || !href) {
+      href = 'article.html?id=' + encodeURIComponent(id);
+    }
 
     var obj = { id: id, badge: badge, badgeClass: badgeClass, isNew: isNew, headline: headline, description: description, href: href, content: content };
 
