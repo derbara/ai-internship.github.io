@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Статья — TEXEL</title>
+
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/articles.css" />
+</head>
+<body>
+
+<header class="header">
+  <nav class="navbar container">
+    <div class="brand">
+      <div class="brand-left">
+        <div class="brand-logo">
+          <img src="../pic/logo-texel.png" alt="Texel logo" class="brand-logo-img" />
+        </div>
+        <div class="brand-text">
+          <div class="texel-word">TEXEL</div>
+          <div class="brand-subtitle">Центр ИИ-инноваций</div>
+        </div>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="../index.html#home">Главная</a></li>
+      <li><a href="guides.html">Методички</a></li>
+      <li><a href="articles.html">Статьи</a></li>
+      <li><a href="practices.html">Практики</a></li>
+      <li><a href="chatbot.html">Чат Бот</a></li>
+      <li class="favorites-nav-item" style="display:none;"><a href="favorites.html">Избранное</a></li>
+    </ul>
+
+    <button class="burger-btn" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+
+    <button class="profile-icon" id="profileBtn">
+      <span class="profile-initial">👤</span>
+    </button>
+  </nav>
+</header>
+
+<main>
+  <section class="article-page-hero">
+    <div class="article-page-hero-inner container">
+      <div class="article-page-eyebrow badge" id="articleBadge">Статья</div>
+      <h1 class="article-page-title" id="articleTitle">Загрузка…</h1>
+      <p class="article-page-lead" id="articleLead"></p>
+      <a href="articles.html" class="article-back-btn">← Назад к статьям</a>
+    </div>
+  </section>
+
+  <section class="article-body container">
+    <article class="article-content" id="articleContent">
+      <p style="opacity:.6">Загружается контент статьи…</p>
+    </article>
+  </section>
+</main>
+
+<button class="scroll-top-btn" aria-label="Наверх">↑</button>
+
+<footer class="footer">
+  <div class="footer-inner container">
+    <div class="footer-left">© 2026 Центр ИИ-инноваций</div>
+    <div class="footer-right">
+      <a href="../index.html#home">Главная</a>
+      <span class="dot">·</span>
+      <a href="guides.html">Методички</a>
+      <span class="dot">·</span>
+      <a href="articles.html">Статьи</a>
+      <span class="dot">·</span>
+      <a href="practices.html">Практики</a>
+      <span class="dot">·</span>
+      <a href="chatbot.html">Чат Бот</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="../firebase-config.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/auth-guard.js"></script>
+<script src="../js/favorites.js"></script>
+
+<script>
+(function() {
+  // Получаем ID статьи из URL: article.html?id=foo
+  var params = new URLSearchParams(window.location.search);
+  var id = params.get('id');
+
+  var titleEl = document.getElementById('articleTitle');
+  var leadEl = document.getElementById('articleLead');
+  var badgeEl = document.getElementById('articleBadge');
+  var contentEl = document.getElementById('articleContent');
+
+  function showArticle(a) {
+    if (!a) {
+      titleEl.textContent = 'Статья не найдена';
+      leadEl.textContent = '';
+      contentEl.innerHTML = '<p>К сожалению, статья с таким ID не существует.</p>' +
+                            '<p><a href="articles.html" class="article-btn">← Вернуться к списку</a></p>';
+      document.title = 'Статья не найдена — TEXEL';
+      return;
+    }
+
+    document.title = (a.headline || 'Статья') + ' — TEXEL';
+    titleEl.textContent = a.headline || '';
+    leadEl.textContent = a.description || '';
+    if (a.badgeClass) badgeEl.classList.add(a.badgeClass);
+    badgeEl.textContent = a.badge || 'Статья';
+    contentEl.innerHTML = a.content || '<p style="opacity:.6">У этой статьи пока нет полного текста.</p>';
+  }
+
+  function findArticle(list, id) {
+    if (!Array.isArray(list)) return null;
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].id === id) return list[i];
+    }
+    return null;
+  }
+
+  if (!id) {
+    showArticle(null);
+    return;
+  }
+
+  // 1) Пробуем localStorage (instant)
+  var foundLocal = null;
+  try {
+    var raw = localStorage.getItem('texel_admin_articles');
+    if (raw) foundLocal = findArticle(JSON.parse(raw), id);
+  } catch (e) {}
+
+  if (foundLocal) showArticle(foundLocal);
+
+  // 2) Затем Firestore (свежие данные с других устройств)
+  if (typeof firebase !== 'undefined' && firebase.firestore) {
+    try {
+      if (!firebase.apps.length && typeof firebaseConfig !== 'undefined') {
+        firebase.initializeApp(firebaseConfig);
+      }
+      var db = firebase.firestore();
+      db.collection('admin_data').doc('articles').get()
+        .then(function(doc) {
+          if (!doc.exists) {
+            if (!foundLocal) showArticle(null);
+            return;
+          }
+          var arr = doc.data().data || [];
+          // Кэшируем для следующего раза
+          try { localStorage.setItem('texel_admin_articles', JSON.stringify(arr)); } catch(e) {}
+          var fresh = findArticle(arr, id);
+          if (fresh) showArticle(fresh);
+          else if (!foundLocal) showArticle(null);
+        })
+        .catch(function(err) {
+          console.warn('Firestore fetch article failed:', err);
+          if (!foundLocal) showArticle(null);
+        });
+    } catch (e) {
+      if (!foundLocal) showArticle(null);
+    }
+  } else {
+    if (!foundLocal) showArticle(null);
+  }
+})();
+</script>
+</body>
+</html>

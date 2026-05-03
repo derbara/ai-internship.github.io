@@ -711,11 +711,16 @@ const Admin = (function() {
     });
     html += '</select></div>';
 
-    html += '<div class="admin-field"><label class="admin-label">Ссылка (href)</label>';
-    html += '<input class="admin-input" id="fArtHref" value="' + esc(a ? a.href : '') + '" placeholder="article-example.html" /></div>';
+    html += '<div class="admin-field"><label class="admin-label">ID (уникальный, латиницей)</label>';
+    html += '<input class="admin-input" id="fArtId" value="' + esc(a ? a.id : '') + '" placeholder="my-article" /></div>';
 
-    html += '<div class="admin-field"><label class="admin-label">ID (уникальный)</label>';
-    html += '<input class="admin-input" id="fArtId" value="' + esc(a ? a.id : '') + '" placeholder="example" /></div>';
+    html += '<div class="admin-field"><label class="admin-label">Ссылка (href)</label>';
+    html += '<input class="admin-input" id="fArtHref" value="' + esc(a ? a.href : '') + '" placeholder="оставьте пустым — будет автоссылка на универсальный шаблон" />';
+    html += '<div class="admin-help">Если пусто — статья откроется через универсальный шаблон <code>pages/article.html?id=&lt;ID&gt;</code> и покажет «Контент» ниже.</div></div>';
+
+    html += '<div class="admin-field"><label class="admin-label">Контент статьи (HTML)</label>';
+    html += '<textarea class="admin-textarea" id="fArtContent" rows="12" placeholder="&lt;h2&gt;Заголовок раздела&lt;/h2&gt;&lt;p&gt;Текст статьи…&lt;/p&gt;">' + esc(a ? (a.content || '') : '') + '</textarea>';
+    html += '<div class="admin-help">Можно использовать теги: &lt;h2&gt;, &lt;h3&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;a&gt;, &lt;br&gt;, &lt;img&gt;</div></div>';
 
     html += '<div class="admin-checkbox-row"><input type="checkbox" id="fArtNew"' + (a && a.isNew ? ' checked' : '') + ' /><label class="admin-label" for="fArtNew">Показывать бейдж NEW</label></div>';
 
@@ -732,11 +737,15 @@ const Admin = (function() {
     var badgeClass = document.getElementById('fArtBadgeClass').value;
     var href = document.getElementById('fArtHref').value.trim();
     var id = document.getElementById('fArtId').value.trim();
+    var content = document.getElementById('fArtContent').value;
     var isNew = document.getElementById('fArtNew').checked;
 
-    if (!headline || !href || !id) { showToast('Заполните заголовок, ссылку и ID', 'error'); return; }
+    if (!headline || !id) { showToast('Заполните заголовок и ID', 'error'); return; }
 
-    var obj = { id: id, badge: badge, badgeClass: badgeClass, isNew: isNew, headline: headline, description: description, href: href };
+    // Если href не указан — автоссылка на универсальный шаблон
+    if (!href) href = 'article.html?id=' + encodeURIComponent(id);
+
+    var obj = { id: id, badge: badge, badgeClass: badgeClass, isNew: isNew, headline: headline, description: description, href: href, content: content };
 
     var articles = loadArticles();
     if (index === -1) articles.push(obj);

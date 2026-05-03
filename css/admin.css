@@ -591,6 +591,20 @@
   color: #fff;
 }
 
+.admin-help {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.55);
+  margin-top: 0.4rem;
+  line-height: 1.4;
+}
+.admin-help code {
+  background: rgba(255,255,255,0.08);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  font-family: 'SF Mono', Menlo, monospace;
+  font-size: 0.72rem;
+}
+
 .admin-checkbox-row {
   display: flex;
   align-items: center;
