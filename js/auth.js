@@ -366,7 +366,7 @@
     try {
       sessionStorage.setItem('yandexReturnUrl', window.location.href);
     } catch (e) {}
-    const url = `https://oauth.yandex.ru/authorize?response_type=token&client_id=${clientId}&redirect_uri=${redirectUri}`;
+    const url = `https://oauth.yandex.ru/authorize?response_type=token&client_id=${clientId}&redirect_uri=${redirectUri}&force_confirm=yes`;
     window.location.href = url;
   }
 
