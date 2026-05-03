@@ -22,6 +22,18 @@
     Object.assign(PRACTICES_DATA, parsed);
   }
 
+  // Нормализация ссылок: страница articles.html сама лежит в /pages/.
+  // Старые данные могли содержать href вида "pages/article-X.html" — это даст
+  // pages/pages/article-X.html (404). Срезаем префикс если он есть.
+  function normalizeHref(href) {
+    if (!href) return '#';
+    var inPages = /\/pages\//.test(window.location.pathname);
+    if (inPages && href.indexOf('pages/') === 0) {
+      return href.substring(6);
+    }
+    return href;
+  }
+
   // ===== СТАТЬИ =====
   function applyArticles(articles) {
     var grid = document.querySelector('.articles-grid');
@@ -41,7 +53,7 @@
       card.innerHTML = topHTML +
         '<h2 class="article-headline">' + (a.headline || '') + '</h2>' +
         '<p class="article-text">' + (a.description || '') + '</p>' +
-        '<a class="article-btn" href="' + (a.href || '#') + '">Читать &rarr;</a>';
+        '<a class="article-btn" href="' + normalizeHref(a.href) + '">Читать &rarr;</a>';
 
       grid.appendChild(card);
     });
@@ -63,7 +75,7 @@
         '<p class="guide-desc">' + (g.description || '') + '</p>' +
         '<div class="guide-tags">' + tagsHTML + '</div>' +
         (g.authors ? '<p class="guide-desc" style="font-size:.8rem;color:rgba(255,255,255,0.6);margin-top:.5rem;">' + g.authors + '</p>' : '') +
-        '<a href="' + (g.href || '#') + '" class="download-btn" target="_blank" rel="noopener">Скачать PDF</a>';
+        '<a href="' + normalizeHref(g.href) + '" class="download-btn" target="_blank" rel="noopener">Скачать PDF</a>';
 
       grid.appendChild(card);
     });

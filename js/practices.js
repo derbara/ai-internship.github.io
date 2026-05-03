@@ -46,24 +46,36 @@
 
     if (db) {
       db.collection('user_progress').doc(uid).get().then(function(doc) {
-        cachedProgress = doc.exists ? doc.data().progress || {} : {};
+        var fromCloud = doc.exists ? (doc.data().progress || {}) : {};
+        var fromLocal = readLocalProgress(uid);
+
+        // Восстановление: если в облаке пусто, но локально есть прогресс
+        // (например, юзер проходил уровни до открытия Firestore-правил) —
+        // поднимаем локальный прогресс в облако
+        if (Object.keys(fromCloud).length === 0 && Object.keys(fromLocal).length > 0) {
+          cachedProgress = fromLocal;
+          saveProgressToFirestore();
+        } else {
+          cachedProgress = fromCloud;
+        }
+
         if (callback) callback();
       }).catch(function(e) {
         console.warn('Firestore read failed, using localStorage:', e);
-        loadFromLocalStorage(uid);
+        cachedProgress = readLocalProgress(uid);
         if (callback) callback();
       });
     } else {
-      loadFromLocalStorage(uid);
+      cachedProgress = readLocalProgress(uid);
       if (callback) callback();
     }
   }
 
-  function loadFromLocalStorage(uid) {
+  function readLocalProgress(uid) {
     try {
       var data = JSON.parse(localStorage.getItem('texel_practice_progress')) || {};
-      cachedProgress = data[uid] || {};
-    } catch(e) { cachedProgress = {}; }
+      return data[uid] || {};
+    } catch(e) { return {}; }
   }
 
   function saveProgressToFirestore() {
