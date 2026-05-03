@@ -446,11 +446,14 @@
     const profileBtn = document.getElementById('profileBtn');
     if (profileBtn) {
       // Inject dropdown menu
+      // Путь к profile.html зависит от того, в какой папке открыта страница
+      const isInPagesDir = /\/pages\//.test(window.location.pathname);
+      const profileHref = isInPagesDir ? 'profile.html' : 'pages/profile.html';
       const dropdown = document.createElement('div');
       dropdown.className = 'profile-dropdown';
       dropdown.id = 'profileDropdown';
       dropdown.innerHTML = `
-        <a href="pages/profile.html" class="profile-dropdown-item">👤 Личный кабинет</a>
+        <a href="${profileHref}" class="profile-dropdown-item">👤 Личный кабинет</a>
         <button class="profile-dropdown-item profile-dropdown-logout" id="dropdownLogout">🚪 Выход</button>
       `;
       profileBtn.parentElement.style.position = 'relative';
