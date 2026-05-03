@@ -16,14 +16,47 @@ const Admin = (function() {
   var db = null;
   function initFirestore() {
     try {
-      if (typeof firebase !== 'undefined' && firebase.firestore) {
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.firestore();
-      }
+      if (typeof firebase === 'undefined' || !firebase.firestore) return;
+      if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+      db = firebase.firestore();
     } catch(e) {
-      // App may already be initialized
       try { db = firebase.firestore(); } catch(e2) {}
     }
+  }
+
+  // ===== ОБЛАЧНАЯ СИНХРОНИЗАЦИЯ (Firestore) =====
+  // Документы хранятся в коллекции admin_data: practices/articles/guides
+  function saveToCloud(key, data) {
+    if (!db) return Promise.resolve();
+    return db.collection('admin_data').doc(key).set({
+      data: data,
+      updatedAt: new Date().toISOString()
+    });
+  }
+
+  function loadFromCloud(key) {
+    if (!db) return Promise.resolve(null);
+    return db.collection('admin_data').doc(key).get()
+      .then(function(doc) {
+        return doc.exists ? doc.data().data : null;
+      });
+  }
+
+  // На старте — подтянуть свежие данные из облака в localStorage,
+  // чтобы админ редактировал актуальное состояние, а не старый локальный кэш
+  function syncFromCloud() {
+    if (!db) return Promise.resolve();
+    return Promise.all([
+      loadFromCloud('practices').then(function(d) {
+        if (d) localStorage.setItem(KEYS.practices, JSON.stringify(d));
+      }).catch(function(e) { console.warn('Cloud sync practices failed:', e); }),
+      loadFromCloud('articles').then(function(d) {
+        if (d) localStorage.setItem(KEYS.articles, JSON.stringify(d));
+      }).catch(function(e) { console.warn('Cloud sync articles failed:', e); }),
+      loadFromCloud('guides').then(function(d) {
+        if (d) localStorage.setItem(KEYS.guides, JSON.stringify(d));
+      }).catch(function(e) { console.warn('Cloud sync guides failed:', e); })
+    ]);
   }
 
   const DEFAULT_ARTICLES = [
@@ -139,6 +172,12 @@ const Admin = (function() {
   function savePractices(data) {
     localStorage.setItem(KEYS.practices, JSON.stringify(data));
     showToast('Практики сохранены');
+    saveToCloud('practices', data)
+      .then(function() { showToast('Синхронизировано с облаком', 'success'); })
+      .catch(function(err) {
+        console.error('Cloud save practices failed:', err);
+        showToast('Не удалось сохранить в облако: ' + err.message, 'error');
+      });
   }
 
   function loadArticles() {
@@ -152,6 +191,12 @@ const Admin = (function() {
   function saveArticles(data) {
     localStorage.setItem(KEYS.articles, JSON.stringify(data));
     showToast('Статьи сохранены');
+    saveToCloud('articles', data)
+      .then(function() { showToast('Синхронизировано с облаком', 'success'); })
+      .catch(function(err) {
+        console.error('Cloud save articles failed:', err);
+        showToast('Не удалось сохранить в облако: ' + err.message, 'error');
+      });
   }
 
   function loadGuides() {
@@ -165,6 +210,12 @@ const Admin = (function() {
   function saveGuides(data) {
     localStorage.setItem(KEYS.guides, JSON.stringify(data));
     showToast('Методички сохранены');
+    saveToCloud('guides', data)
+      .then(function() { showToast('Синхронизировано с облаком', 'success'); })
+      .catch(function(err) {
+        console.error('Cloud save guides failed:', err);
+        showToast('Не удалось сохранить в облако: ' + err.message, 'error');
+      });
   }
 
   // ===== ROUTER =====
@@ -836,7 +887,8 @@ const Admin = (function() {
       if (login(user, pass)) {
         document.getElementById('adminLogin').style.display = 'none';
         document.getElementById('adminPanel').style.display = 'block';
-        renderDashboard();
+        // Сначала подтянуть свежие данные из облака, потом рендерить
+        syncFromCloud().then(renderDashboard);
       } else {
         document.getElementById('adminLoginError').textContent = 'Неверный логин или пароль';
       }
@@ -874,7 +926,7 @@ const Admin = (function() {
     if (checkSession()) {
       document.getElementById('adminLogin').style.display = 'none';
       document.getElementById('adminPanel').style.display = 'block';
-      renderDashboard();
+      syncFromCloud().then(renderDashboard);
     }
   }
 
