@@ -29,18 +29,19 @@
     grid.innerHTML = '';
     articles.forEach(function(a) {
       var card = document.createElement('article');
-      card.className = 'article-card';
-      card.setAttribute('data-reveal', '');
+      // .revealed сразу — IntersectionObserver из main.js уже отработал
+      // и не подхватит динамически добавленные карточки
+      card.className = 'article-card revealed';
 
       var topHTML = '<div class="article-top">';
-      topHTML += '<div class="badge ' + a.badgeClass + '">' + a.badge + '</div>';
+      topHTML += '<div class="badge ' + (a.badgeClass || '') + '">' + (a.badge || '') + '</div>';
       if (a.isNew) topHTML += '<div class="article-badge-new">NEW</div>';
       topHTML += '</div>';
 
       card.innerHTML = topHTML +
-        '<h2 class="article-headline">' + a.headline + '</h2>' +
-        '<p class="article-text">' + a.description + '</p>' +
-        '<a class="article-btn" href="' + a.href + '">Читать &rarr;</a>';
+        '<h2 class="article-headline">' + (a.headline || '') + '</h2>' +
+        '<p class="article-text">' + (a.description || '') + '</p>' +
+        '<a class="article-btn" href="' + (a.href || '#') + '">Читать &rarr;</a>';
 
       grid.appendChild(card);
     });
@@ -53,17 +54,16 @@
     grid.innerHTML = '';
     guides.forEach(function(g) {
       var card = document.createElement('article');
-      card.className = 'guide-card';
-      card.setAttribute('data-reveal', '');
+      card.className = 'guide-card revealed';
 
       var tagsHTML = (g.tags || []).map(function(t) { return '<span class="guide-tag">' + t + '</span>'; }).join('');
 
       card.innerHTML =
-        '<h3 class="guide-title">' + g.title + '</h3>' +
-        '<p class="guide-desc">' + g.description + '</p>' +
+        '<h3 class="guide-title">' + (g.title || '') + '</h3>' +
+        '<p class="guide-desc">' + (g.description || '') + '</p>' +
         '<div class="guide-tags">' + tagsHTML + '</div>' +
         (g.authors ? '<p class="guide-desc" style="font-size:.8rem;color:rgba(255,255,255,0.6);margin-top:.5rem;">' + g.authors + '</p>' : '') +
-        '<a href="' + g.href + '" class="download-btn" target="_blank" rel="noopener">Скачать PDF</a>';
+        '<a href="' + (g.href || '#') + '" class="download-btn" target="_blank" rel="noopener">Скачать PDF</a>';
 
       grid.appendChild(card);
     });
