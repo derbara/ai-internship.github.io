@@ -175,8 +175,12 @@
       '</div>' +
     '</div>';
 
+    var iconHTML = (/^data:image\//i.test(topic.icon) || /\.(png|jpe?g|svg|webp|gif)$/i.test(topic.icon))
+      ? '<img src="' + topic.icon + '" alt="">'
+      : topic.icon;
+
     card.innerHTML =
-      '<div class="topic-icon">' + topic.icon + '</div>' +
+      '<div class="topic-icon">' + iconHTML + '</div>' +
       '<h3 class="topic-title">' + topic.title + '</h3>' +
       '<p class="topic-desc">' + topic.description + '</p>' +
       '<div class="topic-progress">' +
@@ -267,7 +271,14 @@
     // Set header
     var eyebrow = document.getElementById('practiceEyebrow');
     var title = document.getElementById('practiceTitle');
-    if (eyebrow) eyebrow.textContent = currentTopic.icon + ' ' + currentTopic.title + ' · Уровень ' + levelNum;
+    if (eyebrow) {
+      var isImg = /^data:image\//i.test(currentTopic.icon) || /\.(png|jpe?g|svg|webp|gif)$/i.test(currentTopic.icon);
+      if (isImg) {
+        eyebrow.innerHTML = '<img src="' + currentTopic.icon + '" alt="" class="practice-eyebrow-icon"> ' + currentTopic.title + ' · Уровень ' + levelNum;
+      } else {
+        eyebrow.textContent = currentTopic.icon + ' ' + currentTopic.title + ' · Уровень ' + levelNum;
+      }
+    }
     if (title) title.textContent = currentLevelData.title;
     document.title = currentLevelData.title + ' — TEXEL';
 

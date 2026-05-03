@@ -10,7 +10,7 @@ const PRACTICES_DATA = {
   // =============================================
   python: {
     title: 'Понимание Python-разработки',
-    icon: '🐍',
+    icon: '../pic/py.png',
     color: '#3776AB',
     description: 'От переменных и print() до классов и ООП',
     levels: [
@@ -169,7 +169,7 @@ const PRACTICES_DATA = {
   // =============================================
   html: {
     title: 'Основы веб-разработки',
-    icon: '🌐',
+    icon: '../pic/veb.png',
     color: '#E34F26',
     description: 'От базовых тегов до CSS-стилей и JavaScript',
     levels: [
@@ -344,7 +344,7 @@ const PRACTICES_DATA = {
   // =============================================
   modeling: {
     title: '3D-моделирование',
-    icon: '🎨',
+    icon: '../pic/3d.png',
     color: '#FF6B35',
     description: 'От понятий полигонов до рендеринга и текстур',
     levels: [

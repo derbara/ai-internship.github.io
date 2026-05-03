@@ -100,9 +100,9 @@
   ];
 
   var TOPIC_META = {
-    python: { icon: '🐍', name: 'Python', color: '#3776AB', total: 5 },
-    html: { icon: '🌐', name: 'Веб-разработка', color: '#E34F26', total: 5 },
-    modeling: { icon: '🎨', name: '3D-моделирование', color: '#FF6B35', total: 5 }
+    python: { icon: '../pic/py.png', name: 'Python', color: '#3776AB', total: 5 },
+    html: { icon: '../pic/veb.png', name: 'Веб-разработка', color: '#E34F26', total: 5 },
+    modeling: { icon: '../pic/3d.png', name: '3D-моделирование', color: '#FF6B35', total: 5 }
   };
 
   // =============================================
@@ -183,9 +183,12 @@
       var card = document.createElement('div');
       card.className = 'profile-progress-card';
       card.style.setProperty('--card-color', meta.color);
+      var iconHTML = (/^data:image\//i.test(meta.icon) || /\.(png|jpe?g|svg|webp|gif)$/i.test(meta.icon))
+        ? '<img src="' + meta.icon + '" alt="">'
+        : meta.icon;
       card.innerHTML =
         '<div class="profile-progress-header">' +
-          '<span class="profile-progress-icon">' + meta.icon + '</span>' +
+          '<span class="profile-progress-icon">' + iconHTML + '</span>' +
           '<span class="profile-progress-name">' + meta.name + '</span>' +
         '</div>' +
         '<div class="profile-progress-bar">' +

@@ -33,7 +33,7 @@
             </svg>
             Войти через Google
           </button>
-<button class="auth-yandex-btn" id="yandexLoginBtn">
+<button type="button" class="auth-yandex-btn js-yandex-login-btn">
   Войти через Яндекс
 </button>
           <div class="auth-divider"><span>или</span></div>
@@ -78,7 +78,7 @@
             </svg>
             Войти через Google
           </button>
-<button class="auth-yandex-btn" id="yandexLoginBtn">
+<button type="button" class="auth-yandex-btn js-yandex-login-btn">
   Войти через Яндекс
 </button>
           <div class="auth-divider"><span>или</span></div>
@@ -139,6 +139,31 @@
   let currentUser = null;
   let authResolved = false;
 
+  // СИНХРОННОЕ восстановление пользователя из localStorage до любых async-операций.
+  // Это гарантирует, что getCurrentUser() сразу возвращает юзера на любой странице,
+  // не дожидаясь Firebase (~100мс) и не показывая lock screen.
+  (function restoreUserSync() {
+    try {
+      const yandexRaw = localStorage.getItem('yandexUser');
+      if (yandexRaw) {
+        const raw = JSON.parse(yandexRaw);
+        currentUser = {
+          uid: 'yandex_' + (raw.id || raw.login || raw.default_email || 'unknown'),
+          displayName: raw.display_name || raw.real_name || raw.login || 'Пользователь Яндекс',
+          email: raw.default_email || (raw.emails && raw.emails[0]) || '',
+          providerId: 'yandex.ru'
+        };
+        return;
+      }
+      const cachedRaw = localStorage.getItem('texel_auth_cache');
+      if (cachedRaw) {
+        currentUser = JSON.parse(cachedRaw);
+      }
+    } catch (e) {
+      console.warn('Failed to restore user from cache:', e);
+    }
+  })();
+
   function openModal() {
     const modal = document.getElementById('authModal');
     modal.classList.add('auth-active');
@@ -193,6 +218,31 @@
   // =============================================
   // 3. ОБНОВЛЕНИЕ UI ПРОФИЛЯ
   // =============================================
+  function cacheUser(user) {
+    try {
+      if (user) {
+        localStorage.setItem('texel_auth_cache', JSON.stringify({
+          uid: user.uid || '',
+          displayName: user.displayName || '',
+          email: user.email || '',
+          providerId: user.providerId || ''
+        }));
+      } else {
+        localStorage.removeItem('texel_auth_cache');
+      }
+    } catch (e) {}
+  }
+
+  function readCachedUser() {
+    try {
+      const raw = localStorage.getItem('texel_auth_cache');
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch (e) {
+      return null;
+    }
+  }
+
   function updateProfileIcon(user) {
     const btn = document.getElementById('profileBtn');
     if (!btn) return;
@@ -202,9 +252,11 @@
       const initial = name.charAt(0).toUpperCase();
       btn.innerHTML = `<span class="profile-initial">${initial}</span>`;
       btn.classList.add('profile-logged-in');
+      cacheUser(user);
     } else {
       btn.innerHTML = '<span class="profile-initial">\u{1F464}</span>';
       btn.classList.remove('profile-logged-in');
+      cacheUser(null);
     }
   }
 
@@ -236,7 +288,12 @@
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
-    return firebase.auth();
+    const auth = firebase.auth();
+    // Явно ставим LOCAL persistence — сессия переживает закрытие вкладки/браузера
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function (err) {
+      console.warn('Failed to set Firebase persistence:', err);
+    });
+    return auth;
   }
 
   let googleAuthInProgress = false;
@@ -268,80 +325,122 @@
   }
 
   function logout(auth) {
-    auth.signOut().then(() => closeModal());
-  }
-   
-function loginWithYandex() {
-  const clientId = '49caed66fd8d446e9af41e7ae42943ab';
-  const redirectUri = encodeURIComponent(
-    'https://derbara.github.io/ai-internship.github.io/'
-  ); 
-   const url = `https://oauth.yandex.ru/authorize?response_type=token&client_id=${clientId}&redirect_uri=${redirectUri}`;
+    const wasYandex = !!localStorage.getItem('yandexUser');
+    localStorage.removeItem('yandexUser');
+    localStorage.removeItem('texel_auth_cache');
 
-  window.location.href = url;
-}
-function handleYandexAuth() {
-  const fullUrl = window.location.href;
-
-  if (!fullUrl.includes('access_token')) return;
-
-  const hashPart = fullUrl.split('#')[1];
-  const params = new URLSearchParams(hashPart);
-
-  const token = params.get('access_token');
-  if (!token) return;
-
-  fetch('https://login.yandex.ru/info', {
-    headers: {
-      Authorization: `OAuth ${token}`
+    if (auth && auth.currentUser) {
+      auth.signOut().then(() => closeModal());
+    } else {
+      closeModal();
     }
-  })
-    .then(res => res.json())
-   .then(user => {
-  console.log('Yandex user:', user);
 
-  localStorage.setItem('yandexUser', JSON.stringify(user));
+    if (wasYandex) {
+      currentUser = null;
+      authResolved = true;
+      updateProfileIcon(null);
+      window.dispatchEvent(new CustomEvent('texel-auth-changed', {
+        detail: { user: null }
+      }));
+    }
+  }
 
-  currentUser = {
-    displayName: user.display_name,
-    email: user.default_email
-  };
+  // =============================================
+  // 4b. ЯНДЕКС OAUTH
+  // =============================================
+  function normalizeYandexUser(raw) {
+    return {
+      uid: 'yandex_' + (raw.id || raw.login || raw.default_email || 'unknown'),
+      displayName: raw.display_name || raw.real_name || raw.login || 'Пользователь Яндекс',
+      email: raw.default_email || (raw.emails && raw.emails[0]) || '',
+      providerId: 'yandex.ru'
+    };
+  }
 
-  updateProfileIcon(currentUser);
-  updateProfileView(currentUser);
+  function loginWithYandex() {
+    const clientId = '49caed66fd8d446e9af41e7ae42943ab';
+    const redirectUri = encodeURIComponent(
+      'https://derbara.github.io/ai-internship.github.io/'
+    );
+    // Запомним страницу, с которой вошли, чтобы вернуться после OAuth
+    try {
+      sessionStorage.setItem('yandexReturnUrl', window.location.href);
+    } catch (e) {}
+    const url = `https://oauth.yandex.ru/authorize?response_type=token&client_id=${clientId}&redirect_uri=${redirectUri}`;
+    window.location.href = url;
+  }
 
-  
-  authResolved = true;
-  window.dispatchEvent(new CustomEvent('texel-auth-changed', {
-    detail: { user: currentUser }
-  }));
+  function handleYandexAuth() {
+    const fullUrl = window.location.href;
+    if (!fullUrl.includes('access_token')) return;
 
-  window.location.hash = '';
-  closeModal();
-});
-}
+    const hashPart = fullUrl.split('#')[1];
+    const params = new URLSearchParams(hashPart);
+    const token = params.get('access_token');
+    if (!token) return;
+
+    // сразу убираем токен из URL, чтобы не оставался в адресной строке
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+
+    fetch('https://login.yandex.ru/info?format=json', {
+      headers: { Authorization: `OAuth ${token}` }
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Yandex /info failed: ' + res.status);
+        return res.json();
+      })
+      .then(raw => {
+        const user = normalizeYandexUser(raw);
+        localStorage.setItem('yandexUser', JSON.stringify(raw));
+
+        currentUser = user;
+        authResolved = true;
+        updateProfileIcon(user);
+        updateProfileView(user);
+
+        window.dispatchEvent(new CustomEvent('texel-auth-changed', {
+          detail: { user: user }
+        }));
+
+        closeModal();
+
+        // Возврат на исходную страницу, если входили не с homepage
+        try {
+          const returnUrl = sessionStorage.getItem('yandexReturnUrl');
+          sessionStorage.removeItem('yandexReturnUrl');
+          if (returnUrl && returnUrl !== window.location.href.split('#')[0]) {
+            window.location.replace(returnUrl);
+          }
+        } catch (e) {}
+      })
+      .catch(err => {
+        console.error('Yandex auth error:', err);
+        showError('loginError', 'Не удалось войти через Яндекс. Попробуйте ещё раз');
+      });
+  }
   // =============================================
   // 5. ИНИЦИАЛИЗАЦИЯ
   // =============================================
   document.addEventListener('DOMContentLoaded', () => {
     injectAuthModal();
-      handleYandexAuth();
-    // восстановление пользователя Яндекс
-const savedUser = localStorage.getItem('yandexUser');
 
-if (savedUser) {
-  const user = JSON.parse(savedUser);
+    // currentUser уже восстановлен синхронно из localStorage до DOMContentLoaded.
+    // Если он есть — обновить UI и пометить состояние как разрешённое для consumers.
+    if (currentUser) {
+      updateProfileIcon(currentUser);
+      updateProfileView(currentUser);
+      authResolved = true;
+      window.dispatchEvent(new CustomEvent('texel-auth-changed', {
+        detail: { user: currentUser }
+      }));
+    }
 
-  currentUser = {
-    displayName: user.display_name,
-    email: user.default_email
-  };
-
-  updateProfileIcon(currentUser);
-  updateProfileView(currentUser);
-}
-
+    handleYandexAuth();
     const auth = initFirebase();
+
+    // Кнопка Яндекс — работает даже если Firebase не настроен
+    document.querySelectorAll('.js-yandex-login-btn')
+      .forEach(btn => btn.addEventListener('click', loginWithYandex));
 
     // Profile button + dropdown
     const profileBtn = document.getElementById('profileBtn');
@@ -367,10 +466,10 @@ if (savedUser) {
         }
       });
 
-      // Logout from dropdown
+      // Logout from dropdown — работает и для Яндекс-пользователей без Firebase
       document.getElementById('dropdownLogout').addEventListener('click', () => {
         dropdown.classList.remove('profile-dropdown-open');
-        if (auth) logout(auth);
+        logout(auth);
       });
 
       // Close dropdown on outside click
@@ -399,7 +498,14 @@ if (savedUser) {
     });
 
     if (!auth) {
-      // Firebase not configured — show helpful message on form submit
+      // Firebase не настроен — резолвим состояние, чтобы guard не висел в loading
+      if (!authResolved) {
+        authResolved = true;
+        window.dispatchEvent(new CustomEvent('texel-auth-changed', {
+          detail: { user: currentUser }
+        }));
+      }
+      // helpful message on form submit
       document.getElementById('loginForm').addEventListener('submit', (e) => {
         e.preventDefault();
         showError('loginError', 'Firebase не настроен. Заполните firebase-config.js');
@@ -414,7 +520,8 @@ if (savedUser) {
       document.getElementById('googleRegBtn').addEventListener('click', () => {
         showError('regError', 'Firebase не настроен. Заполните firebase-config.js');
       });
-      document.getElementById('logoutBtn').addEventListener('click', closeModal);
+      // logout — даже без Firebase нужно уметь выйти из Яндекса
+      document.getElementById('logoutBtn').addEventListener('click', () => logout(null));
       return;
     }
 
@@ -422,9 +529,6 @@ if (savedUser) {
     document.getElementById('googleLoginBtn').addEventListener('click', () => loginWithGoogle(auth));
     document.getElementById('googleRegBtn').addEventListener('click', () => loginWithGoogle(auth));
 
-     //yandex
-  document.querySelectorAll('#yandexLoginBtn')
-  .forEach(btn => btn.addEventListener('click', loginWithYandex));
     // Email login
     document.getElementById('loginForm').addEventListener('submit', (e) => {
       e.preventDefault();
@@ -446,15 +550,35 @@ if (savedUser) {
 
     // Auth state observer
     auth.onAuthStateChanged((user) => {
-      currentUser = user;
       authResolved = true;
-      updateProfileIcon(user);
-      if (user) {
-        updateProfileView(user);
+
+      // Если есть Яндекс-юзер — он приоритетнее Firebase null
+      if (!user && localStorage.getItem('yandexUser')) {
+        return;
       }
-      window.dispatchEvent(new CustomEvent('texel-auth-changed', {
-        detail: { user: user }
-      }));
+
+      // Firebase подтвердил юзера — обновляем currentUser реальным объектом
+      if (user) {
+        currentUser = user;
+        updateProfileIcon(user);
+        updateProfileView(user);
+        window.dispatchEvent(new CustomEvent('texel-auth-changed', {
+          detail: { user: user }
+        }));
+        return;
+      }
+
+      // Firebase подтвердил «не залогинен».
+      // Если кэш был от Firebase-провайдера (не Яндекс) — сессия истекла, чистим.
+      const cached = readCachedUser();
+      const wasFirebaseSession = cached && cached.providerId !== 'yandex.ru';
+      if (wasFirebaseSession || !cached) {
+        currentUser = null;
+        updateProfileIcon(null);
+        window.dispatchEvent(new CustomEvent('texel-auth-changed', {
+          detail: { user: null }
+        }));
+      }
     });
   });
 

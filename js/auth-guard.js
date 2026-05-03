@@ -37,27 +37,28 @@
 
     target.style.position = 'relative';
     const lockScreen = createLockScreen(options || {});
+    // Скрываем по умолчанию: не показываем экран блокировки, пока авторизация не разрешена
+    // (иначе при переходе с homepage Firebase ~100мс восстанавливает сессию и lock мигает)
+    lockScreen.style.display = 'none';
     target.appendChild(lockScreen);
 
     if (window.TexelAuth) {
+      function checkAuth() {
+        // Пока Firebase не сообщил состояние — оставляем lock скрытым
+        if (!window.TexelAuth.isResolved() && !localStorage.getItem('yandexUser')) {
+          lockScreen.style.display = 'none';
+          return;
+        }
 
-  function checkAuth() {
-    const firebaseUser = window.TexelAuth.getCurrentUser();
-    const yandexUser = localStorage.getItem('yandexUser');
+        const firebaseUser = window.TexelAuth.getCurrentUser();
+        const yandexUser = localStorage.getItem('yandexUser');
 
-    if (firebaseUser || yandexUser) {
-      lockScreen.style.display = 'none';
-    } else {
-      lockScreen.style.display = 'flex';
+        lockScreen.style.display = (firebaseUser || yandexUser) ? 'none' : 'flex';
+      }
+
+      checkAuth();
+      window.addEventListener('texel-auth-changed', checkAuth);
     }
-  }
-
-  // сразу проверяем
-  checkAuth();
-
-  // и при изменении авторизации
-  window.addEventListener('texel-auth-changed', checkAuth);
-}
     return lockScreen;
   }
 
@@ -67,27 +68,27 @@
   function updateAuthUI() {
     if (!window.TexelAuth) return;
 
-   function updateUI() {
-  const firebaseUser = window.TexelAuth?.getCurrentUser();
-  const yandexUser = localStorage.getItem('yandexUser');
+    function updateUI() {
+      // Пока авторизация не разрешена — не трогаем UI, иначе мигание при перезагрузке
+      if (!window.TexelAuth.isResolved() && !localStorage.getItem('yandexUser')) {
+        return;
+      }
+      const firebaseUser = window.TexelAuth.getCurrentUser();
+      const yandexUser = localStorage.getItem('yandexUser');
+      const isAuth = !!(firebaseUser || yandexUser);
 
-  const isAuth = firebaseUser || yandexUser;
+      document.querySelectorAll('.favorites-nav-item').forEach(el => {
+        el.style.display = isAuth ? '' : 'none';
+      });
 
-  document.querySelectorAll('.favorites-nav-item').forEach(el => {
-    el.style.display = isAuth ? '' : 'none';
-  });
+      const cta = document.getElementById('register-cta');
+      if (cta) {
+        cta.style.display = isAuth ? 'none' : '';
+      }
+    }
 
-  const cta = document.getElementById('register-cta');
-  if (cta) {
-    cta.style.display = isAuth ? 'none' : '';
-  }
-}
-
-// запускаем сразу
-updateUI();
-
-// и при изменении авторизации
-window.addEventListener('texel-auth-changed', updateUI);
+    updateUI();
+    window.addEventListener('texel-auth-changed', updateUI);
 
     // CTA кнопка "Войти"
     const ctaBtn = document.getElementById('ctaLoginBtn');

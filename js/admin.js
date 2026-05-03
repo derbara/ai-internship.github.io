@@ -58,6 +58,19 @@ const Admin = (function() {
     return JSON.parse(JSON.stringify(obj));
   }
 
+  function isImageIcon(icon) {
+    return !!icon && (/^data:image\//i.test(icon) || /\.(png|jpe?g|svg|webp|gif)$/i.test(icon));
+  }
+
+  function renderIcon(icon) {
+    if (!icon) return '';
+    if (isImageIcon(icon)) {
+      var src = icon.replace(/^(\.\.\/)+/, '');
+      return '<img class="admin-topic-icon" src="' + esc(src) + '" alt="">';
+    }
+    return esc(icon);
+  }
+
   // ===== TOAST =====
   var toastTimer = null;
   function showToast(msg, type) {
@@ -255,7 +268,7 @@ const Admin = (function() {
         var taskCount = 0;
         t.levels.forEach(function(l) { taskCount += l.tasks.length; });
         html += '<tr>';
-        html += '<td><span class="admin-color-swatch" style="background:' + esc(t.color) + '"></span>' + esc(t.icon) + ' ' + esc(t.title) + '</td>';
+        html += '<td><span class="admin-color-swatch" style="background:' + esc(t.color) + '"></span>' + renderIcon(t.icon) + ' ' + esc(t.title) + '</td>';
         html += '<td>' + t.levels.length + '</td>';
         html += '<td>' + taskCount + '</td>';
         html += '<td class="admin-table-actions">';
@@ -279,7 +292,7 @@ const Admin = (function() {
     var html = '<nav class="admin-breadcrumb">';
     html += '<button class="admin-breadcrumb-link" onclick="Admin.renderTopicsList()">Практики</button>';
     html += '<span class="admin-breadcrumb-sep">›</span>';
-    html += '<span class="admin-breadcrumb-current">' + esc(topic.icon) + ' ' + esc(topic.title) + '</span>';
+    html += '<span class="admin-breadcrumb-current">' + renderIcon(topic.icon) + ' ' + esc(topic.title) + '</span>';
     html += '</nav>';
 
     html += '<div class="admin-section-header"><h2 class="admin-section-title">Уровни</h2>';
@@ -317,7 +330,7 @@ const Admin = (function() {
     var html = '<nav class="admin-breadcrumb">';
     html += '<button class="admin-breadcrumb-link" onclick="Admin.renderTopicsList()">Практики</button>';
     html += '<span class="admin-breadcrumb-sep">›</span>';
-    html += '<button class="admin-breadcrumb-link" onclick="Admin.renderLevelsList(\'' + esc(topicKey) + '\')">' + esc(topic.icon) + ' ' + esc(topic.title) + '</button>';
+    html += '<button class="admin-breadcrumb-link" onclick="Admin.renderLevelsList(\'' + esc(topicKey) + '\')">' + renderIcon(topic.icon) + ' ' + esc(topic.title) + '</button>';
     html += '<span class="admin-breadcrumb-sep">›</span>';
     html += '<span class="admin-breadcrumb-current">' + esc(level.title) + '</span>';
     html += '</nav>';
@@ -359,8 +372,14 @@ const Admin = (function() {
     html += '<input class="admin-input" id="fTopicKey" value="' + esc(topicKey || '') + '" ' + (isEdit ? 'readonly style="opacity:0.5"' : '') + ' placeholder="например: python" /></div>';
     html += '<div class="admin-field"><label class="admin-label">Название</label>';
     html += '<input class="admin-input" id="fTopicTitle" value="' + esc(existing ? existing.title : '') + '" /></div>';
-    html += '<div class="admin-field"><label class="admin-label">Иконка (emoji)</label>';
-    html += '<input class="admin-input" id="fTopicIcon" value="' + esc(existing ? existing.icon : '') + '" placeholder="🐍" /></div>';
+    html += '<div class="admin-field"><label class="admin-label">Иконка (emoji или картинка)</label>';
+    html += '<div class="admin-icon-row">';
+    html += '<div class="admin-icon-preview" id="fTopicIconPreview">' + (existing && existing.icon ? renderIcon(existing.icon) : '<span class="admin-icon-placeholder">—</span>') + '</div>';
+    html += '<div class="admin-icon-controls">';
+    html += '<input class="admin-input" id="fTopicIcon" value="' + esc(existing ? existing.icon : '') + '" placeholder="🐍 или путь / data URL" oninput="Admin.updateIconPreview()" />';
+    html += '<label class="admin-btn admin-btn-outline admin-btn-sm admin-icon-upload-btn">📁 Загрузить картинку<input type="file" accept="image/*" id="fTopicIconFile" onchange="Admin.handleIconUpload(event)" hidden /></label>';
+    html += '</div>';
+    html += '</div></div>';
     html += '<div class="admin-field"><label class="admin-label">Цвет</label>';
     html += '<input type="color" class="admin-input" id="fTopicColor" value="' + (existing ? existing.color : '#1C97FD') + '" style="height:44px;padding:4px" /></div>';
     html += '<div class="admin-field"><label class="admin-label">Описание</label>';
@@ -391,6 +410,33 @@ const Admin = (function() {
     savePractices(data);
     closeModal();
     renderTopicsList();
+  }
+
+  function updateIconPreview() {
+    var input = document.getElementById('fTopicIcon');
+    var preview = document.getElementById('fTopicIconPreview');
+    if (!input || !preview) return;
+    var val = input.value.trim();
+    preview.innerHTML = val ? renderIcon(val) : '<span class="admin-icon-placeholder">—</span>';
+  }
+
+  function handleIconUpload(event) {
+    var file = event.target.files && event.target.files[0];
+    if (!file) return;
+    if (file.size > 500 * 1024) {
+      showToast('Картинка слишком большая (максимум 500 КБ)', 'error');
+      event.target.value = '';
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var dataUrl = e.target.result;
+      var input = document.getElementById('fTopicIcon');
+      if (input) input.value = dataUrl;
+      updateIconPreview();
+    };
+    reader.onerror = function() { showToast('Не удалось прочитать файл', 'error'); };
+    reader.readAsDataURL(file);
   }
 
   function deleteTopic(topicKey) {
@@ -842,6 +888,8 @@ const Admin = (function() {
     renderTasksList: renderTasksList,
     showTopicForm: showTopicForm,
     saveTopicForm: saveTopicForm,
+    updateIconPreview: updateIconPreview,
+    handleIconUpload: handleIconUpload,
     deleteTopic: deleteTopic,
     showLevelForm: showLevelForm,
     saveLevelForm: saveLevelForm,
